@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MVP</string>
+    <string name="empty"></string>
+    <string name="toast_twice_click_exit">再次点击退出应用</string>
+    <string name="dialog_please_wait">请稍后</string>
+    <string name="btn_back">返回</string>
+</resources>

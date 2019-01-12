@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--text size-->
+    <dimen name="text_title">20sp</dimen>
+    <dimen name="text_primary">18sp</dimen>
+    <dimen name="text_secondary">16sp</dimen>
+    <dimen name="text_ternary">14sp</dimen>
+
+    <dimen name="drawer_width">280dp</dimen>
+    <dimen name="margin_top_left">5dp</dimen>
+    <dimen name="len_square_title">200dp</dimen>
+
+    <dimen name="margin_top_right">15dp</dimen>
+    <dimen name="margin_search_img_right">5dp</dimen>
+    <dimen name="margin_search_img_top">8dp</dimen>
+    <dimen name="margin_search_img_left">5dp</dimen>
+
+    <!--spacing between two view-->
+    <dimen name="spacing_huge">24dp</dimen>
+    <dimen name="spacing_large">18dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_small">10dp</dimen>
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_login">72dp</dimen>
+
+</resources>

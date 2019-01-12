@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="transparent_loading">#66000000</color>
+    <color name="transparent_loading2">#66000000</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="grey">#BBBBBB</color>
+
+    <color name="txt_primary">#000000</color>
+    <color name="txt_secondary">#131313</color>
+    <color name="txt_ternary">#666666</color>
+</resources>
