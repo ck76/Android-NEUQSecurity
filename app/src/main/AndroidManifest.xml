@@ -9,6 +9,11 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!--百度语音识别-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -18,15 +23,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" />
+        <activity android:name=".business.security.view.SecurityActivity" />
+        <activity android:name=".business.account.view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".business.security.view.SecurityActivity" />
-        <activity android:name=".business.account.view.LoginActivity"></activity>
+
+        <!--百度语音识别-->
+        <meta-data
+            android:name="com.baidu.speech.APP_ID"
+            android:value="15406519" />
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="Zoy9IYUHupfXOc4hV1BW7hB1" />
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="0me3YvbSysFbprp8XSgKyc2Czghj5ALt" />
+
+        <service
+            android:name="com.baidu.speech.VoiceRecognitionService"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>

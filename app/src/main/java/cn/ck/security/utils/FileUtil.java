@@ -30,10 +30,21 @@ public class FileUtil {
 
     public static final int REQUEST_EXTERNAL_STORAGE = 100;
 
-    private static final String[] PERMISSIONS_STORAGE = new String[]{
+    private static final String[] baiduSpeechPermission = {Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.INTERNET,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    private static final String[] permissions = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE
             , Manifest.permission.READ_EXTERNAL_STORAGE
             , Manifest.permission.CAMERA};
+
+    public static void requestPermissions(Activity activity) {
+
+    }
 
 
     /**
@@ -48,8 +59,8 @@ public class FileUtil {
      * @param activity
      */
     public static void verifyStoragePermissions(Activity activity) {
-        if(!checkPermissions(activity)){
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+        if (!checkPermissions(activity)) {
+            ActivityCompat.requestPermissions(activity, permissions, REQUEST_EXTERNAL_STORAGE);
         }
     }
 
