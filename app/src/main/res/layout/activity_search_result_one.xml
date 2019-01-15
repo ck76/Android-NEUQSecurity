@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEF5FB "
+    android:orientation="vertical"
+    tools:context=".business.security.view.SearchResultOneActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_search"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#1296F3"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/fl_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_weight="12">
+
+            <EditText
+                android:id="@+id/edit_input"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:background="@drawable/bg_security_edit"
+                android:hint="Search"
+                android:paddingLeft="26dp"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_search" />
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/txt_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="搜索"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="提示：
+输 入 车 牌 号 的 数 字 部 分，即 可 查 询
+例 如：冀 C12345，只 用 搜 索 12345"
+        android:textSize="14sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recv_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

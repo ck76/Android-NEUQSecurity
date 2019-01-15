@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <!--百度语音识别-->
+    <!-- 百度语音识别 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
 
-        <!--百度语音识别-->
+        <!-- 百度语音识别 -->
         <meta-data
             android:name="com.baidu.speech.APP_ID"
             android:value="15406519" />
@@ -48,7 +48,8 @@
             android:name="com.baidu.speech.VoiceRecognitionService"
             android:exported="false" />
 
-
+        <activity android:name=".business.security.view.SearchResultOneActivity" />
+        <activity android:name=".business.security.view.SearchResultTwoActivity"></activity>
     </application>
 
 </manifest>

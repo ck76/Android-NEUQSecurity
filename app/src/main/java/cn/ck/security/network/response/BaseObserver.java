@@ -33,7 +33,7 @@ public abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
 
     @Override
     public void onError(Throwable e) {
-        ToastUtil.show(App.getmContext(), ExceptionEngine.handleException(e).getMsg());
+        ToastUtil.show(App.getAppContext(), ExceptionEngine.handleException(e).getMsg());
     }
 
     @Override

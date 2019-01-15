@@ -42,7 +42,7 @@ public class App extends Application {
         return sInstance;
     }
 
-    public static Context getmContext(){
+    public static Context getAppContext(){
         return mContext;
     }
 

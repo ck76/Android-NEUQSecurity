@@ -26,7 +26,7 @@ public abstract class ApiCallBack<T> implements Callback<ApiResponse<T>> {
 
     @Override
     public void onFailure(Call call, Throwable t) {
-        ToastUtil.show(App.getmContext(), ExceptionEngine.handleException(t).getMsg());
+        ToastUtil.show(App.getAppContext(), ExceptionEngine.handleException(t).getMsg());
         onError(ExceptionEngine.handleException(t).getCode());
     }
 }

@@ -1,9 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EEF5FB"
     tools:context=".business.account.view.LoginActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="76dp"
+        android:layout_height="88dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/dabing" />
+
+    <FrameLayout
+        android:id="@+id/fl_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp">
+
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="296dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_login_edit"
+            android:hint="输入账号"
+            android:paddingStart="56dp" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_user" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fl_user"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp">
+
+        <EditText
+            android:id="@+id/edit_pwd"
+            android:layout_width="296dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_login_edit"
+            android:hint="输入密码"
+            android:inputType="textPassword"
+            android:paddingStart="56dp" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_password" />
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="200dp"
+        android:layout_height="38dp"
+        android:layout_below="@id/fl_pwd"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/bg_login_btn"
+        android:text="登录"
+        android:textColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="88dp"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="保护校园安全，从我做起" />
+
+            <View
+                android:layout_width="88dp"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="powered by:不洗碗工作室  版本：1.1" />
+    </LinearLayout>
+
+
+</RelativeLayout>
