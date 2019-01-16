@@ -2,12 +2,13 @@
 <resources>
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#ffffff</color>
-    <color name="colorAccent">#000000</color>
+    <color name="colorAccent">#2196F3</color>
 
     <color name="transparent">#00000000</color>
     <color name="transparent_loading">#66000000</color>
-    <color name="transparent_loading2">#66000000</color>
+    <color name="transparent_loading2">#33000000</color>
 
+    <color name="primary">#2196F3</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="grey">#BBBBBB</color>

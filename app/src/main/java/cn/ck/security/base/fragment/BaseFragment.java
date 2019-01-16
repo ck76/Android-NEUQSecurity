@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.ck.security.App;
-import cn.ck.security.wedget.LoadingDialog;
+import cn.ck.security.wedget.LoadingDialogWeiBo;
 
 /**
  * @author FanHongyu.
@@ -28,7 +28,7 @@ public abstract class BaseFragment extends Fragment {
      * 当前Fragment RootView
      */
     protected View mView;
-    protected LoadingDialog mLoadingDialog;
+    protected LoadingDialogWeiBo mLoadingDialog;
     protected Context mContext;
     private Activity activity;
 
@@ -39,7 +39,7 @@ public abstract class BaseFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = getActivity();
-        mLoadingDialog = new LoadingDialog(activity);
+        mLoadingDialog = new LoadingDialogWeiBo(activity);
     }
 
     @Nullable

@@ -59,6 +59,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login() {
+        mLoadingDialog.show();
         NetworkFactory
                 .getInstance()
                 .creatService(ApiService.class)
@@ -70,11 +71,12 @@ public class LoginActivity extends BaseActivity {
                         ToastUtil.show(App.getAppContext(), "登陆成功");
                         startActivity(SecurityActivity.class);
                         finish();
+                        mLoadingDialog.dismiss();
                     }
 
                     @Override
                     protected void onError(int code) {
-
+                        mLoadingDialog.dismiss();
                     }
                 });
     }

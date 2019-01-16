@@ -20,14 +20,14 @@ import cn.ck.security.R;
  * @author chengkun
  * @since 2018/11/15 23:52
  */
-public class LoadingDialog {
+public class LoadingDialogWeiBo {
     private Context mContext;
     private Dialog mDialog;
     private View mContentView;
     private ImageView mLoadingImage;
     private TextView mLoadingMsg;
 
-    public LoadingDialog(Context context) {
+    public LoadingDialogWeiBo(Context context) {
         mContext = context;
         mDialog = new Dialog(mContext, R.style.dialog_loading);
         mContentView = LayoutInflater.from(mContext).inflate(R.layout.dialog_loading, null);
@@ -37,14 +37,14 @@ public class LoadingDialog {
         mDialog.setCanceledOnTouchOutside(false);
     }
 
-    public LoadingDialog setLoadingMsg(String msg) {
+    public LoadingDialogWeiBo setLoadingMsg(String msg) {
         if (!TextUtils.isEmpty(msg)) {
             mLoadingMsg.setText(msg);
         }
         return this;
     }
 
-    public LoadingDialog setLoadingMsg(@StringRes final int resId) {
+    public LoadingDialogWeiBo setLoadingMsg(@StringRes final int resId) {
         mLoadingMsg.setText(resId);
 
         return this;

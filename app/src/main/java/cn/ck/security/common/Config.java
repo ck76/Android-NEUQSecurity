@@ -35,6 +35,4 @@ public class Config {
     public static final int[] NET_CORRECT_CODE_ARRAYS = {1000,0};
 
 
-
-
 }

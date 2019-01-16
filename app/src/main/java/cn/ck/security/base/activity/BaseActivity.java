@@ -10,7 +10,7 @@ import android.view.WindowManager;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.ck.security.utils.StatusBarUtils;
-import cn.ck.security.wedget.LoadingDialog;
+import cn.ck.security.wedget.LoadingDialogWeiBo;
 
 /**
  * @author FanHongyu.
@@ -22,7 +22,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected Context mContext;
     protected Unbinder mUnbinder;
-    protected LoadingDialog mLoadingDialog;
+    protected LoadingDialogWeiBo mLoadingDialog;
 
     /**
      * 获取日志输出标志
@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         mUnbinder = ButterKnife.bind(this);
         mContext = this;
-        mLoadingDialog = new LoadingDialog(mContext);
+        mLoadingDialog = new LoadingDialogWeiBo(mContext);
         initActivity(savedInstanceState);
     }
 

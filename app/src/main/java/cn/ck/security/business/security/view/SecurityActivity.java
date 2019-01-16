@@ -13,18 +13,30 @@ import android.widget.Toast;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yanzhenjie.permission.AndPermission;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.ck.security.App;
 import cn.ck.security.R;
-import cn.ck.security.base.activity.BaseActivity;
+import cn.ck.security.base.mvp.view.BasePresenterActivity;
 import cn.ck.security.business.account.view.LoginActivity;
+import cn.ck.security.business.security.Constans;
+import cn.ck.security.business.security.contract.SecurityContract;
+import cn.ck.security.business.security.model.Car;
+import cn.ck.security.business.security.presenter.SecurityPresenter;
 import cn.ck.security.common.CacheKey;
+import cn.ck.security.common.CommonConstans;
+import cn.ck.security.network.NetworkFactory;
+import cn.ck.security.network.response.ApiCallBack;
+import cn.ck.security.network.response.ApiResponse;
+import cn.ck.security.network.services.ApiService;
 import cn.ck.security.utils.CacheUtil;
 import cn.ck.security.utils.DialogUtil;
 import cn.ck.security.utils.ToastUtil;
 
-public class SecurityActivity extends BaseActivity {
+public class SecurityActivity extends BasePresenterActivity<SecurityContract.SecurityPresenter>
+        implements SecurityContract.SecurityView {
 
     public static final int REQUEST_CODE = 200;
 
@@ -42,7 +54,21 @@ public class SecurityActivity extends BaseActivity {
     TextView txtLogout;
 
     private String[] permissions;
+    private String mScanResult;
+    private String mType;
+    private String mResult;
 
+    private void transform() {
+        String[] resultArray = mScanResult.split("#");
+        mType = resultArray[0];
+        mResult = resultArray[1];
+
+    }
+
+    @Override
+    protected SecurityContract.SecurityPresenter getPresenter() {
+        return new SecurityPresenter(this);
+    }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
@@ -99,6 +125,43 @@ public class SecurityActivity extends BaseActivity {
         }
     }
 
+
+    private void excute() {
+        switch (mType) {
+            case CommonConstans
+                    .TYPE_CAR:
+                searchCar();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
+    private void searchCar() {
+        showLoading();
+        NetworkFactory.getInstance()
+                .creatService(ApiService.class)
+                .searchByNum(mResult)
+                .enqueue(new ApiCallBack<List<Car>>() {
+                    @Override
+                    protected void onDataBack(ApiResponse<List<Car>> response) {
+                        closeLoading();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(Constans.CAR_INFO, response.getData().get(0));
+                        startActivity(SearchResultTwoActivity.class, bundle);
+                    }
+
+                    @Override
+                    protected void onError(int code) {
+                        closeLoading();
+                    }
+                });
+
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -110,13 +173,16 @@ public class SecurityActivity extends BaseActivity {
                     return;
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                    String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                    mScanResult = bundle.getString(CodeUtils.RESULT_STRING);
+                    transform();
+                    excute();
+                    Toast.makeText(this, "解析结果:" + mScanResult, Toast.LENGTH_LONG).show();
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
             }
         }
     }
+
 
 }
