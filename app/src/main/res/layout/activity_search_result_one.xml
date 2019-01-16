@@ -29,13 +29,17 @@
                 android:layout_height="24dp"
                 android:background="@drawable/bg_security_edit"
                 android:hint="Search"
-                android:paddingLeft="26dp"
-                android:textSize="12sp" />
+                android:inputType="number"
+                android:maxLines="1"
+                android:paddingStart="26dp"
+                android:textSize="12sp"
+                tools:ignore="RtlSymmetry" />
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_search" />
+
             <ImageView
                 android:id="@+id/image_clear"
                 android:layout_width="24dp"
@@ -68,14 +72,21 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:text="提示：
-输 入 车 牌 号 的 数 字 部 分，即 可 查 询
-例 如：冀 C12345，只 用 搜 索 12345"
+        android:padding="24dp"
+        android:text="提示：\n输 入 车 牌 号 的 数 字 部 分，即 可 查 询 \n例 如：冀 C12345，只 用 搜 索 12345"
         android:textSize="14sp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recv_result"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_result_recv">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recv_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
 </LinearLayout>

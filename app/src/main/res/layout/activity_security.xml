@@ -50,14 +50,15 @@
         </FrameLayout>
 
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_menu" />
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="搜索"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
@@ -78,10 +79,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_titile"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp">
+        android:layout_centerHorizontal="true">
+        
+        <ImageView
+            android:layout_marginTop="48dp"
+            android:layout_width="290dp"
+            android:layout_height="280dp"
+            android:src="@drawable/bg_qrcode"/>
 
         <ImageView
+            android:layout_gravity="center"
             android:layout_width="248dp"
             android:layout_height="248dp"
             android:background="@drawable/bg_security_qrcode_white" />
@@ -105,8 +112,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="21dp"
-            android:text="扫描二维码，获取车主信息"
+            android:layout_marginBottom="60dp"
+            android:text="扫一扫查询车主信息"
+            android:textColor="@color/grey"
             android:textSize="14sp" />
     </FrameLayout>
 
@@ -115,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/fl_scan"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="32dp"
         android:text="试试语音输入车牌号" />
 
 
@@ -130,7 +138,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_security_btn"
-            android:text="扫二维码" />
+            android:text="扫一扫" />
 
         <Button
             android:id="@+id/btn_search"
@@ -138,7 +146,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_security_btn"
-            android:text="一键搜索" />
+            android:text="一键查询" />
     </LinearLayout>
 
     <ImageView
@@ -148,8 +156,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_security_voice"
-        android:padding="16dp"
         android:src="@drawable/ic_voice" />
 
 

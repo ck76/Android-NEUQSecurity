@@ -59,10 +59,14 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     private String mResult;
 
     private void transform() {
-        String[] resultArray = mScanResult.split("#");
-        mType = resultArray[0];
-        mResult = resultArray[1];
-
+        String[] resultArray = mScanResult.split(CommonConstans.SPLITE);
+        if (resultArray.length >= 2) {
+            mType = resultArray[0];
+            mResult = resultArray[1];
+            excute();
+        } else {
+            ToastUtil.show(App.getAppContext(), "请扫描正确的二维码");
+        }
     }
 
     @Override
@@ -158,7 +162,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                         closeLoading();
                     }
                 });
-
     }
 
 
@@ -175,7 +178,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     mScanResult = bundle.getString(CodeUtils.RESULT_STRING);
                     transform();
-                    excute();
                     Toast.makeText(this, "解析结果:" + mScanResult, Toast.LENGTH_LONG).show();
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();

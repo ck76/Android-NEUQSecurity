@@ -7,19 +7,33 @@
     android:background="#EEF5FB"
     tools:context=".business.account.view.LoginActivity">
 
-    <ImageView
-        android:id="@+id/image_logo"
-        android:layout_width="76dp"
-        android:layout_height="88dp"
+    <FrameLayout
+        android:id="@+id/fl_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/dabing" />
+        android:layout_marginTop="100dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/bg_login_logo" />
+
+        <ImageView
+            android:id="@+id/image_logo"
+            android:layout_width="76dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center"
+            android:src="@drawable/logo" />
+    </FrameLayout>
+
 
     <FrameLayout
         android:id="@+id/fl_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image_logo"
+        android:layout_below="@id/fl_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp">
 
@@ -29,6 +43,7 @@
             android:layout_height="48dp"
             android:background="@drawable/bg_login_edit"
             android:hint="输入账号"
+            android:maxLines="1"
             android:paddingStart="56dp" />
 
         <ImageView
@@ -54,6 +69,7 @@
             android:background="@drawable/bg_login_edit"
             android:hint="输入密码"
             android:inputType="textPassword"
+            android:maxLines="1"
             android:paddingStart="56dp" />
 
         <ImageView
@@ -64,16 +80,28 @@
             android:src="@drawable/ic_password" />
     </FrameLayout>
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="200dp"
-        android:layout_height="38dp"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/fl_pwd"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
-        android:background="@drawable/bg_login_btn"
-        android:text="登录"
-        android:textColor="@color/white" />
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_login_btn_image"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitXY"/>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="200dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_login_btn"
+            android:text="登录"
+            android:textColor="@color/white" />
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

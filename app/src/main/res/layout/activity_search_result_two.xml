@@ -31,29 +31,52 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/txt_car_num"
+    <FrameLayout
+        android:id="@+id/fl_car_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="冀413285"
-        android:textColor="#4A4A4A "
-        android:textSize="32sp" />
+        android:layout_marginTop="50dp">
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_result1" />
+
+        <TextView
+            android:id="@+id/txt_car_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="冀413285"
+            android:textColor="#4A4A4A "
+            android:textSize="32sp" />
+    </FrameLayout>
+
 
     <FrameLayout
         android:id="@+id/fl_info"
-        android:layout_width="280dp"
-        android:layout_height="192dp"
-        android:layout_below="@id/txt_car_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fl_car_num"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/bg_security_qrcode_white">
+        android:layout_marginTop="50dp">
+
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="192dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_result3" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="280dp"
+            android:layout_height="192dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_security_qrcode_white"
             android:orientation="vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
@@ -134,19 +157,31 @@
 
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/image_call"
-        android:layout_width="78dp"
-        android:layout_height="78dp"
+    <FrameLayout
+        android:id="@+id/fl_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/fl_info"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_call2" />
+        android:layout_marginTop="50dp">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/bg_result2" />
+
+        <ImageView
+            android:id="@+id/image_call"
+            android:layout_width="78dp"
+            android:layout_height="78dp"
+            android:src="@drawable/ic_call2" />
+    </FrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image_call"
+        android:layout_below="@id/fl_call"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="点击一键呼叫" />

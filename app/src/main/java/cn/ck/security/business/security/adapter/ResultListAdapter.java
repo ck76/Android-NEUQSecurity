@@ -1,5 +1,6 @@
 package cn.ck.security.business.security.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +39,10 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+        if (position == mCars.size() - 1) {
+            holder.divider.setVisibility(View.GONE);
+        }
         holder.carNumTxt.setText(mCars.get(position).getCarNumber());
         holder.callImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +69,7 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
+        ImageView divider;
         ImageView callImage;
         TextView carNumTxt;
 
@@ -73,6 +77,7 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
             super(itemView);
             callImage = itemView.findViewById(R.id.image_call);
             carNumTxt = itemView.findViewById(R.id.txt_car_num);
+            divider = itemView.findViewById(R.id.divider);
         }
     }
 
