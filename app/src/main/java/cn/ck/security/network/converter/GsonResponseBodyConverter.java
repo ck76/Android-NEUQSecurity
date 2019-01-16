@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 import cn.ck.security.common.Config;
-import cn.ck.security.network.exception.ApiException;
+import cn.ck.security.network.exception.ServerException;
 import cn.ck.security.network.response.ApiResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -44,7 +44,7 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
             }
         }
         //通过抛出自定义异常传递错误码及错误信息
-        throw (ApiException) mGson.fromJson(response, ApiException.class);
+        throw (ServerException) mGson.fromJson(response, ServerException.class);
     }
 }
 

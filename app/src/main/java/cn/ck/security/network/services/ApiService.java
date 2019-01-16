@@ -41,14 +41,23 @@ public interface ApiService {
     Call<ApiResponse<List<Car>>> searchByNum(@Field("car_number") String carNum);
 
     /**
+     * 车牌号模糊查询
+     *
+     * @param carNum 车牌
+     * @return
+     */
+    @GET("pass/like/{carNumber}")
+    Call<ApiResponse<List<Car>>> fuzzySearch(@Path("carNumber") String carNum);
+
+    /**
      * 获取没过的列表
      */
-    @GET("pass/getcheckedpasses/{limit}/{offset}")
+    @GET("pass/getpasses/{limit}/{offset}")
     Call<ApiResponse<List<Car>>> getUnPassedCars(@Path("offset") String start, @Path("limit") String offset);
 
     /**
      * 获取审核过的列表
      */
-    @GET("pass/getpasses/{limit}/{offset}")
+    @GET("pass/getcheckedpasses/{limit}/{offset}")
     Call<ApiResponse<List<Car>>> getPassedCars(@Path("offset") String start, @Path("limit") String offset);
 }

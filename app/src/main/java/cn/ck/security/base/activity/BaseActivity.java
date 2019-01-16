@@ -78,11 +78,22 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param bundle
      */
     protected void startActivity(Class<?> newActivity, Bundle bundle) {
-        Intent intent = new Intent(BaseActivity.this, newActivity);
+        Intent intent = new Intent(this, newActivity);
         if (bundle != null) {
             intent.putExtras(bundle);
         }
         startActivity(intent);
+    }
+
+    /**
+     * 启动新活动
+     *
+     * @param newActivity
+     * @param REQUEST_CODE
+     */
+    protected void startActivityForResult(Class<?> newActivity, int REQUEST_CODE) {
+        Intent intent = new Intent(this, newActivity);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
 

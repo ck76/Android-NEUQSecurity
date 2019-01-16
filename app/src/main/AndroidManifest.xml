@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- 百度语音识别 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -24,7 +25,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity" />
-        <activity android:name=".business.security.view.SecurityActivity" />
+        <activity android:name=".business.security.view.SecurityActivity">
+
+        </activity>
         <activity android:name=".business.account.view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +52,8 @@
             android:exported="false" />
 
         <activity android:name=".business.security.view.SearchResultOneActivity" />
-        <activity android:name=".business.security.view.SearchResultTwoActivity"></activity>
+        <activity android:name=".business.security.view.SearchResultTwoActivity" />
+        <activity android:name=".business.security.view.ScanActivity"></activity>
     </application>
 
 </manifest>

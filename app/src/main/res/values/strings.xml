@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MVP</string>
+    <string name="app_name">东大安保</string>
     <string name="empty"></string>
     <string name="toast_twice_click_exit">再次点击退出应用</string>
     <string name="dialog_please_wait">请稍后</string>

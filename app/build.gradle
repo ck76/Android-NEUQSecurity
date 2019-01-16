@@ -9,6 +9,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi', 'x86'
+        }
+
     }
     buildTypes {
         release {
@@ -16,6 +21,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -48,13 +59,14 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     implementation 'com.zhihu.android:matisse:0.4.3'
-    implementation 'com.yanzhenjie:permission:1.1.2'
+    implementation 'com.yanzhenjie:permission:2.0.0-rc4'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
 
 
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.jaeger.statusbarutil:library:1.5.1'
 
 
 }

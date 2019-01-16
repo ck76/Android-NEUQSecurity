@@ -2,11 +2,13 @@ package cn.ck.security.business.security.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * @author chengkun
  * @since 2019/1/12 19:45
  */
-public class Car {
+public class Car  implements Serializable {
     /**
      * id : 11
      * name : pig

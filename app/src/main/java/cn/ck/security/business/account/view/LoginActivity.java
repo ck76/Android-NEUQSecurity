@@ -8,10 +8,10 @@ import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.ck.security.App;
-import cn.ck.security.MainActivity;
 import cn.ck.security.R;
 import cn.ck.security.base.activity.BaseActivity;
 import cn.ck.security.business.account.model.User;
+import cn.ck.security.business.security.view.SecurityActivity;
 import cn.ck.security.common.CacheKey;
 import cn.ck.security.network.NetworkFactory;
 import cn.ck.security.network.response.ApiCallBack;
@@ -31,15 +31,19 @@ public class LoginActivity extends BaseActivity {
 
     private String id;
     private String pwd;
+    private String token;
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        token = CacheUtil.getSP().getString(CacheKey.TOKEN, "");
     }
 
     @Override
     protected void initView() {
-
+        if (!TextUtils.isEmpty(token)) {
+            startActivity(SecurityActivity.class);
+            finish();
+        }
     }
 
     @Override
@@ -64,7 +68,7 @@ public class LoginActivity extends BaseActivity {
                     protected void onDataBack(ApiResponse<User> response) {
                         CacheUtil.put(CacheKey.TOKEN, response.getData().getTokenStr());
                         ToastUtil.show(App.getAppContext(), "登陆成功");
-                        startActivity(MainActivity.class);
+                        startActivity(SecurityActivity.class);
                         finish();
                     }
 

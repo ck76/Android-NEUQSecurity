@@ -6,17 +6,15 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 
 import com.squareup.leakcanary.LeakCanary;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.ck.security.utils.CacheUtil;
 import cn.ck.security.utils.ToastUtil;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * @author FanHongyu.
@@ -54,12 +52,13 @@ public class App extends Application {
         mContext = getApplicationContext();
         registerActivityLifecycleCallbacks(getActivityLifecycleCallbacks());
 
+        //qrcode
+        ZXingLibrary.initDisplayOpinion(this);
+
         //内存泄漏检测工具
         if (BuildConfig.DEBUG) {
             LeakCanary.install(this);
         }
-
-        Log.i(TAG, "onCreate: ");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

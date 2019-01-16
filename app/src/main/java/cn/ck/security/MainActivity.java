@@ -1,9 +1,12 @@
 package cn.ck.security;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.yanzhenjie.permission.AndPermission;
 
 import java.util.List;
 
@@ -23,14 +26,19 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tv_hello)
     TextView tvHello;
 
+    private String[] permissions;
+
     @Override
     protected void initData(Bundle savedInstanceState) {
 
+        permissions = new String[]{Manifest.permission.CAMERA};
         CacheUtil.put(CacheKey.TOKEN, "662964be4715897212e6319846d3150f");
     }
 
     @Override
     protected void initView() {
+        initPermission();
+
         tvHello.setText("mvp");
         tvHello.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +65,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
+    }
+
+    private void initPermission() {
+        AndPermission.with(this)
+                .permission(permissions)
+                .start();
     }
 
 }

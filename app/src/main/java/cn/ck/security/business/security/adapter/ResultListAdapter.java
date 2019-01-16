@@ -23,7 +23,12 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
     private List<Car> mCars;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
+    private OnCallListener mOnCallListener;
 
+    public ResultListAdapter(List<Car> cars, Context context) {
+        mCars = cars;
+        mContext = context;
+    }
 
     @NonNull
     @Override
@@ -36,6 +41,14 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.carNumTxt.setText(mCars.get(position).getCarNumber());
         holder.callImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnCallListener != null) {
+                    mOnCallListener.onCallClick(position);
+                }
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mOnItemClickListener != null) {
@@ -63,7 +76,7 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
         }
     }
 
-    private interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
@@ -71,4 +84,11 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
         mOnItemClickListener = onItemClickListener;
     }
 
+    public interface OnCallListener {
+        void onCallClick(int position);
+    }
+
+    public void setOnCallListener(OnCallListener listener) {
+        this.mOnCallListener = listener;
+    }
 }
