@@ -5,7 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,7 +28,7 @@ import cn.ck.security.network.response.ApiResponse;
 import cn.ck.security.network.services.ApiService;
 import cn.ck.security.utils.ToastUtil;
 
-public class SearchResultOneActivity extends BaseActivity {
+public class SearchResultOneActivity extends BaseActivity implements TextWatcher {
 
     @BindView(R.id.edit_input)
     EditText editInput;
@@ -52,6 +54,7 @@ public class SearchResultOneActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        editInput.addTextChangedListener(this);
     }
 
     private void initRecv() {
@@ -78,7 +81,12 @@ public class SearchResultOneActivity extends BaseActivity {
 
     @OnClick(R.id.txt_search)
     public void onViewClicked() {
-        fuzzySearch();
+        String carNum = editInput.getText().toString().trim();
+        if (!TextUtils.isEmpty(carNum)) {
+            fuzzySearch(carNum);
+        } else {
+            ToastUtil.show(App.getAppContext(), "请输入车牌号");
+        }
     }
 
     @OnClick(R.id.image_clear)
@@ -86,27 +94,38 @@ public class SearchResultOneActivity extends BaseActivity {
         editInput.setText("");
     }
 
-    private void fuzzySearch() {
-        String carNum = editInput.getText().toString().trim();
-        if (!TextUtils.isEmpty(carNum)) {
-            NetworkFactory.getInstance()
-                    .creatService(ApiService.class)
-                    .fuzzySearch(carNum)
-                    .enqueue(new ApiCallBack<List<Car>>() {
-                        @Override
-                        protected void onDataBack(ApiResponse<List<Car>> response) {
-                            mCars = response.getData();
-                            initRecv();
-                            txtHint.setVisibility(View.GONE);
-                        }
+    private void fuzzySearch(String carNum) {
 
-                        @Override
-                        protected void onError(int code) {
+        NetworkFactory.getInstance()
+                .creatService(ApiService.class)
+                .fuzzySearch(carNum)
+                .enqueue(new ApiCallBack<List<Car>>() {
+                    @Override
+                    protected void onDataBack(ApiResponse<List<Car>> response) {
+                        mCars = response.getData();
+                        initRecv();
+                        txtHint.setVisibility(View.GONE);
+                    }
 
-                        }
-                    });
-        } else {
-            ToastUtil.show(App.getAppContext(), "请输入车牌号");
-        }
+                    @Override
+                    protected void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        fuzzySearch(charSequence.toString().trim());
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }

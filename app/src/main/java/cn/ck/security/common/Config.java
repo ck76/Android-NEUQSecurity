@@ -8,6 +8,12 @@ package cn.ck.security.common;
 
 public class Config {
 
+    public static final boolean IS_DEBUG = true;
+
+    /**
+     * BuglyAppId
+     */
+    public static final String BUGLY_APP_ID = "235d3eed39";
 
     /**
      * 当前app版本号

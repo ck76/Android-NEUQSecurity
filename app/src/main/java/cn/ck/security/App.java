@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ck.security.common.Config;
 import cn.ck.security.utils.CacheUtil;
 import cn.ck.security.utils.ToastUtil;
 
@@ -59,7 +61,8 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             LeakCanary.install(this);
         }
-
+        //Bugly
+        CrashReport.initCrashReport(getApplicationContext(), Config.BUGLY_APP_ID, Config.IS_DEBUG);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());

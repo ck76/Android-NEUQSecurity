@@ -65,7 +65,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
             mResult = resultArray[1];
             excute();
         } else {
-            ToastUtil.show(App.getAppContext(), "请扫描正确的二维码");
+            ToastUtil.show(App.getAppContext(), "请扫描出入证上的二维码");
         }
     }
 
@@ -137,6 +137,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 searchCar();
                 break;
             default:
+                ToastUtil.show(App.getAppContext(), "请扫描出入证上的二维码");
                 break;
         }
 
@@ -186,5 +187,8 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        App.getInstance().exitAppWithTwiceClick();
+    }
 }
