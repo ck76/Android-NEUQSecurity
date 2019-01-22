@@ -80,17 +80,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_titile"
         android:layout_centerHorizontal="true">
-        
-        <ImageView
-            android:layout_marginTop="48dp"
-            android:layout_width="290dp"
-            android:layout_height="280dp"
-            android:src="@drawable/bg_qrcode"/>
 
         <ImageView
-            android:layout_gravity="center"
+            android:layout_width="290dp"
+            android:layout_height="280dp"
+            android:layout_marginTop="48dp"
+            android:src="@drawable/bg_qrcode" />
+
+        <ImageView
             android:layout_width="248dp"
             android:layout_height="248dp"
+            android:layout_gravity="center"
             android:background="@drawable/bg_security_qrcode_white" />
 
         <ImageView
@@ -157,6 +157,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_voice" />
+
+    <TextView
+        android:id="@+id/txt_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="cacsacsacascascascascascas"
+        android:textColor="@color/black"
+        android:layout_marginBottom="100dp"
+        android:background="@color/white"
+        android:textSize="6sp" />
 
 
 </RelativeLayout>

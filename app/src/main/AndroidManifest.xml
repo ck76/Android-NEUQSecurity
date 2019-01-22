@@ -14,13 +14,15 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!--Bugly-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS"
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -34,14 +36,14 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity" />
         <activity android:name=".business.security.view.SecurityActivity">
-
-        </activity>
-        <activity android:name=".business.account.view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".business.account.view.LoginActivity">
+
         </activity>
 
         <!-- 百度语音识别 -->
@@ -62,6 +64,7 @@
         <activity android:name=".business.security.view.SearchResultOneActivity" />
         <activity android:name=".business.security.view.SearchResultTwoActivity" />
         <activity android:name=".business.security.view.ScanActivity" />
+        <activity android:name=".voice.mini.ActivityMiniRecog" />
     </application>
 
 </manifest>

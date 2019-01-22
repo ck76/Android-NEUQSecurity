@@ -1,8 +1,12 @@
 package cn.ck.security.business.security.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,10 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.speech.EventListener;
+import com.baidu.speech.EventManager;
+import com.baidu.speech.EventManagerFactory;
+import com.baidu.speech.asr.SpeechConstant;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yanzhenjie.permission.AndPermission;
 
+import org.json.JSONObject;
+
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,10 +45,12 @@ import cn.ck.security.network.response.ApiResponse;
 import cn.ck.security.network.services.ApiService;
 import cn.ck.security.utils.CacheUtil;
 import cn.ck.security.utils.DialogUtil;
+import cn.ck.security.utils.NetworkUtils;
 import cn.ck.security.utils.ToastUtil;
+import cn.ck.security.voice.mini.AutoCheck;
 
 public class SecurityActivity extends BasePresenterActivity<SecurityContract.SecurityPresenter>
-        implements SecurityContract.SecurityView {
+        implements SecurityContract.SecurityView, EventListener {
 
     public static final int REQUEST_CODE = 200;
 
@@ -52,11 +66,16 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     ImageView imageVoice;
     @BindView(R.id.txt_logout)
     TextView txtLogout;
+    @BindView(R.id.txt_result)
+    TextView txtResult;
 
     private String[] permissions;
     private String mScanResult;
     private String mType;
     private String mResult;
+
+    //语音识别
+    private EventManager asr;
 
     private void transform() {
         String[] resultArray = mScanResult.split(CommonConstans.SPLITE);
@@ -70,26 +89,37 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     }
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.activity_security;
+    }
+
+    @Override
     protected SecurityContract.SecurityPresenter getPresenter() {
         return new SecurityPresenter(this);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        permissions = new String[]{Manifest.permission.CAMERA,
+        permissions = new String[]{
+                Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE};
     }
 
     @Override
     protected void initView() {
         initPermission();
+        initVoice();
     }
 
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_security;
+    private void initVoice() {
+        // 基于sdk集成1.1 初始化EventManager对象
+        asr = EventManagerFactory.create(this, "asr");
+        //  EventListener 中 onEvent方法
+        asr.registerListener(this);
     }
 
     private void initPermission() {
@@ -112,10 +142,11 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 startActivityForResult(ScanActivity.class, REQUEST_CODE);
                 break;
             case R.id.btn_search:
-                startActivity(SearchResultOneActivity.class);
+                //startActivity(SearchResultOneActivity.class);
+                stop();
                 break;
             case R.id.image_voice:
-                ToastUtil.show(App.getAppContext(), "正在开发中...");
+                startVoice();
                 break;
             case R.id.txt_logout:
                 new DialogUtil.QuickDialog(this).setClickListener(() -> {
@@ -187,8 +218,102 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         }
     }
 
+
+    private void startVoice() {
+        if (!NetworkUtils.isConnected()) {
+            ToastUtil.show(App.getAppContext(), "请连接网路");
+        } else {
+            start();
+        }
+    }
+
+    /**
+     * 开始识别
+     */
+    @SuppressLint("HandlerLeak")
+    private void start() {
+        Map<String, Object> params = new LinkedHashMap<String, Object>();
+        String event = null;
+        event = SpeechConstant.ASR_START;
+        // 基于SDK集成2.1 设置识别参数
+        //params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
+        // params.put(SpeechConstant.NLU, "enable");
+         params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0); // 长语音
+        // params.put(SpeechConstant.IN_FILE, "res:///com/baidu/android/voicedemo/16k_test.pcm");
+        // params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
+        // params.put(SpeechConstant.PID, 1537); // 中文输入法模型，有逗号
+        // 请先使用如‘在线识别’界面测试和生成识别参数。 params同ActivityRecog类中myRecognizer.start(params);
+        // 复制此段可以自动检测错误
+        (new AutoCheck(getApplicationContext(), new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 100) {
+                    AutoCheck autoCheck = (AutoCheck) msg.obj;
+                    synchronized (autoCheck) {
+                        String message = autoCheck.obtainErrorMessage();
+                    }
+                }
+            }
+        }, false)).checkAsr(params);
+        String json = new JSONObject(params).toString();
+        asr.send(event, json, null, 0, 0);
+    }
+
+    /**
+     * 点击停止按钮
+     */
+    private void stop() {
+        asr.send(SpeechConstant.ASR_STOP, null, null, 0, 0); //
+    }
+
+    /**
+     * 语音回调事件统一由
+     * public void onEvent(String name, String params, byte[] data, int offset, int length)
+     * 该方法回调 其中name是回调事件， params是回调参数。
+     * （data，offset，length）缓存临时数据，三者一起，生效部分为 data[offset] 开始，长度为length。
+     */
+    @Override
+    public void onEvent(String name, String params, byte[] data, int offset, int length) {
+        String logTxt="";
+
+
+        if (params != null && !params.isEmpty()) {
+            logTxt += " ;params :" + params;
+        }
+        if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL)) {
+            if (params != null && params.contains("\"nlu_result\"")) {
+                if (length > 0 && data.length > 0) {
+                    logTxt += ", 语义解析结果：" + new String(data, offset, length);
+                }
+            }
+        }
+        showResult(logTxt);
+    }
+
+    private void showResult(String text) {
+
+        text += "\n";
+        Log.i(getClass().getName(), text);
+        txtResult.append(text);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
+        asr.unregisterListener(this);
+    }
+
     @Override
     public void onBackPressed() {
         App.getInstance().exitAppWithTwiceClick();
     }
+
 }
