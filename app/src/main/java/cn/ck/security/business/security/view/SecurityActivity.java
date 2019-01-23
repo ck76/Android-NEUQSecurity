@@ -1,6 +1,5 @@
 package cn.ck.security.business.security.view;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +20,7 @@ import com.baidu.speech.asr.SpeechConstant;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
-import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Action;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -74,7 +73,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     @BindView(R.id.txt_result)
     TextView txtResult;
 
-    private String[] permissions;
     private String mScanResult;
     private String mType;
     private String mResult;
@@ -107,19 +105,22 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        permissions = new String[]{
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.ACCESS_NETWORK_STATE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE};
     }
 
     @Override
     protected void initView() {
-        initPermission();
         initVoice();
+        checkPermission(Constans.permissions, new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+
+            }
+        }, new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                ToastUtil.show(App.getAppContext(), "请授予权限，以防影响正常使用");
+            }
+        });
     }
 
     private void initVoice() {
@@ -127,12 +128,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         asr = EventManagerFactory.create(this, "asr");
         //  EventListener 中 onEvent方法
         asr.registerListener(this);
-    }
-
-    private void initPermission() {
-        AndPermission.with(this)
-                .permission(permissions)
-                .start();
     }
 
     @OnClick({R.id.ll_search, R.id.image_scan, R.id.btn_scan, R.id.btn_search, R.id.image_voice,
@@ -228,25 +223,43 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     private void startVoice() {
         if (!NetworkUtils.isConnected()) {
             ToastUtil.show(App.getAppContext(), "请连接网路");
-        } else {
-            mVoiceDialog = new VoiceDialog(mContext);
-            mVoiceDialog
-                    .setStartListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ToastUtil.show(App.getAppContext(),"1");
-                            start();
-                        }
-                    })
-                    .setStopListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ToastUtil.show(App.getAppContext(),"2");
-                            stop();
-                        }
-                    })
-                   .show();
+            return;
         }
+        checkPermission(Constans.permissions, new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                mVoiceDialog = new VoiceDialog(mContext);
+                mVoiceDialog
+                        .setStartListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                start();
+                            }
+                        })
+                        .setStopListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                stop();
+                            }
+                        })
+                        .setSearchListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (!TextUtils.isEmpty(mVoiceDialog.getResultRext())) {
+                                    SearchResultOneActivity.startActivity(mContext, mVoiceDialog.getResultRext());
+                                }
+                            }
+                        })
+                        .show();
+            }
+        }, new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                ToastUtil.show(App.getAppContext(), "请开启语音权限");
+            }
+        });
+
+
     }
 
     /**
@@ -328,6 +341,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         super.onDestroy();
         asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
         asr.unregisterListener(this);
+        mVoiceDialog.dismiss();
     }
 
     @Override

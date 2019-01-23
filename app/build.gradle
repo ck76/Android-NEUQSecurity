@@ -25,7 +25,11 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+//            //是否去除未利用的资源，默认false，表示不去除。
+//            shrinkResources true
+//            //是否使用zipalign工具压缩。
+//            zipAlignEnable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

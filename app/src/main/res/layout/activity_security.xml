@@ -162,11 +162,11 @@
         android:id="@+id/txt_result"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:text="cacsacsacascascascascascas"
-        android:textColor="@color/black"
         android:layout_marginBottom="100dp"
         android:background="@color/white"
-        android:textSize="6sp" />
+        android:textColor="@color/black"
+        android:textSize="6sp"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

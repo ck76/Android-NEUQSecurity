@@ -3,7 +3,7 @@ package cn.ck.security.wedget;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +50,6 @@ public class VoiceDialog {
         imageCancle.setOnClickListener(view -> dismiss());
         //EventBus
         EventBus.getDefault().register(this);
-        Log.i("ck", "VoiceDialog: " + EventBus.getDefault().isRegistered(this));
     }
 
 
@@ -67,8 +66,10 @@ public class VoiceDialog {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void setResultText(MessageEvent messageEvent) {
-        Log.i("ck", "接收：" + messageEvent.getMessage());
-        editResult.setText(messageEvent.getMessage().trim());
+        if (!TextUtils.isEmpty(messageEvent.getMessage())
+                && messageEvent.getMessage().length() > editResult.getText().toString().length()) {
+            editResult.setText(messageEvent.getMessage().trim());
+        }
     }
 
     public String getResultRext() {
@@ -81,6 +82,8 @@ public class VoiceDialog {
                 @Override
                 public void onClick(View view) {
                     listener.onClick(view);
+                    waveBezier.setVisibility(View.VISIBLE);
+                    btnSearch.setVisibility(View.GONE);
                     waveBezier.startAnimation();
                 }
             });
@@ -94,6 +97,8 @@ public class VoiceDialog {
                 @Override
                 public void onClick(View view) {
                     listener.onClick(view);
+                    waveBezier.setVisibility(View.GONE);
+                    btnSearch.setVisibility(View.VISIBLE);
                     waveBezier.stopAnimation();
                 }
             });

@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.ck.security.utils.StatusBarUtils;
@@ -150,5 +153,15 @@ public abstract class BaseActivity extends AppCompatActivity {
             StatusBarUtils.setDeepColorStatusBar(this.getWindow());
         }
     }
+
+    protected void checkPermission(String[] permissions, Action granted, Action denied) {
+        AndPermission
+                .with(mContext)
+                .permission(permissions)
+                .onGranted(granted)
+                .onDenied(denied)
+                .start();
+    }
+
 
 }
