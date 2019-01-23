@@ -1,5 +1,6 @@
 package cn.ck.security.business.security.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +43,8 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     private ResultListAdapter mAdapter;
     private List<Car> mCars;
 
+    private String mVoiceCarNum;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_search_result_one;
@@ -49,7 +52,10 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mVoiceCarNum = getIntent().getStringExtra(Constans.CAR_NUM);
+        if (!TextUtils.isEmpty(mVoiceCarNum)) {
+            fuzzySearch(mVoiceCarNum);
+        }
     }
 
     @Override
@@ -127,5 +133,11 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+
+    public static void startActivity(Context context, String carNum) {
+        Intent intent = new Intent(context, SearchResultOneActivity.class);
+        intent.putExtra(Constans.CAR_NUM, carNum);
+        context.startActivity(intent);
     }
 }

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,9 +18,12 @@ import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yanzhenjie.permission.AndPermission;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
@@ -39,6 +42,7 @@ import cn.ck.security.business.security.model.Car;
 import cn.ck.security.business.security.presenter.SecurityPresenter;
 import cn.ck.security.common.CacheKey;
 import cn.ck.security.common.CommonConstans;
+import cn.ck.security.event.MessageEvent;
 import cn.ck.security.network.NetworkFactory;
 import cn.ck.security.network.response.ApiCallBack;
 import cn.ck.security.network.response.ApiResponse;
@@ -48,6 +52,7 @@ import cn.ck.security.utils.DialogUtil;
 import cn.ck.security.utils.NetworkUtils;
 import cn.ck.security.utils.ToastUtil;
 import cn.ck.security.voice.mini.AutoCheck;
+import cn.ck.security.wedget.VoiceDialog;
 
 public class SecurityActivity extends BasePresenterActivity<SecurityContract.SecurityPresenter>
         implements SecurityContract.SecurityView, EventListener {
@@ -76,6 +81,8 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
     //语音识别
     private EventManager asr;
+    private String logTxt;
+    private VoiceDialog mVoiceDialog;
 
     private void transform() {
         String[] resultArray = mScanResult.split(CommonConstans.SPLITE);
@@ -142,8 +149,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 startActivityForResult(ScanActivity.class, REQUEST_CODE);
                 break;
             case R.id.btn_search:
-                //startActivity(SearchResultOneActivity.class);
-                stop();
+                startActivity(SearchResultOneActivity.class);
                 break;
             case R.id.image_voice:
                 startVoice();
@@ -223,7 +229,23 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         if (!NetworkUtils.isConnected()) {
             ToastUtil.show(App.getAppContext(), "请连接网路");
         } else {
-            start();
+            mVoiceDialog = new VoiceDialog(mContext);
+            mVoiceDialog
+                    .setStartListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ToastUtil.show(App.getAppContext(),"1");
+                            start();
+                        }
+                    })
+                    .setStopListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ToastUtil.show(App.getAppContext(),"2");
+                            stop();
+                        }
+                    })
+                   .show();
         }
     }
 
@@ -238,7 +260,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         // 基于SDK集成2.1 设置识别参数
         //params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
         // params.put(SpeechConstant.NLU, "enable");
-         params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0); // 长语音
+        params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0); // 长语音
         // params.put(SpeechConstant.IN_FILE, "res:///com/baidu/android/voicedemo/16k_test.pcm");
         // params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
         // params.put(SpeechConstant.PID, 1537); // 中文输入法模型，有逗号
@@ -274,29 +296,26 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
      */
     @Override
     public void onEvent(String name, String params, byte[] data, int offset, int length) {
-        String logTxt="";
-
+        logTxt = "";
+        JsonObject result = null;
 
         if (params != null && !params.isEmpty()) {
-            logTxt += " ;params :" + params;
+            result = new JsonParser().parse(params).getAsJsonObject();
         }
         if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL)) {
-            if (params != null && params.contains("\"nlu_result\"")) {
-                if (length > 0 && data.length > 0) {
-                    logTxt += ", 语义解析结果：" + new String(data, offset, length);
-                }
+//            if (params != null && params.contains("\"nlu_result\"")) {
+//                if (length > 0 && data.length > 0) {
+//                    logTxt += ", 语义解析结果：" + new String(data, offset, length);
+//                }
+//            }
+            if (!TextUtils.isEmpty(result.get("best_result").getAsString())) {
+                logTxt += result.get("best_result").getAsString();
             }
+
         }
-        showResult(logTxt);
+        txtResult.setText(logTxt);
+        EventBus.getDefault().post(new MessageEvent(logTxt));
     }
-
-    private void showResult(String text) {
-
-        text += "\n";
-        Log.i(getClass().getName(), text);
-        txtResult.append(text);
-    }
-
 
     @Override
     protected void onPause() {

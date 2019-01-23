@@ -6,4 +6,5 @@ package cn.ck.security.business.security;
  */
 public class Constans {
     public static final String CAR_INFO = "carInfo";
+    public static final String CAR_NUM = "carNum";
 }
