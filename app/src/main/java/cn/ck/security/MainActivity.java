@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
         tvHello.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtil.show(MainActivity.this, "dd");
+                ToastUtil.show(App.getAppContext(), "MainActivity");
                 NetworkFactory.getInstance().creatService(ApiService.class)
                         .getPassedCars("5", "2")
                         .enqueue(new ApiCallBack<List<Car>>() {

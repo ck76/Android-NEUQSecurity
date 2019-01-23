@@ -247,6 +247,8 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                             public void onClick(View view) {
                                 if (!TextUtils.isEmpty(mVoiceDialog.getResultRext())) {
                                     SearchResultOneActivity.startActivity(mContext, mVoiceDialog.getResultRext());
+                                } else {
+                                    ToastUtil.show(App.getAppContext(), "内容不可为空");
                                 }
                             }
                         })
