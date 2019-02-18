@@ -1,12 +1,17 @@
 package cn.ck.security.business.security.view;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,12 +22,12 @@ import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
+import com.carlos.voiceline.mylibrary.VoiceLineView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yanzhenjie.permission.Action;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
@@ -41,17 +46,16 @@ import cn.ck.security.business.security.model.Car;
 import cn.ck.security.business.security.presenter.SecurityPresenter;
 import cn.ck.security.common.CacheKey;
 import cn.ck.security.common.CommonConstans;
-import cn.ck.security.event.MessageEvent;
 import cn.ck.security.network.NetworkFactory;
 import cn.ck.security.network.response.ApiCallBack;
 import cn.ck.security.network.response.ApiResponse;
 import cn.ck.security.network.services.ApiService;
 import cn.ck.security.utils.CacheUtil;
+import cn.ck.security.utils.DensityUtil;
 import cn.ck.security.utils.DialogUtil;
 import cn.ck.security.utils.NetworkUtils;
 import cn.ck.security.utils.ToastUtil;
 import cn.ck.security.voice.mini.AutoCheck;
-import cn.ck.security.wedget.VoiceDialog;
 
 public class SecurityActivity extends BasePresenterActivity<SecurityContract.SecurityPresenter>
         implements SecurityContract.SecurityView, EventListener {
@@ -79,8 +83,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
     //语音识别
     private EventManager asr;
-    private String logTxt;
-    private VoiceDialog mVoiceDialog;
+    private String logTxt = "";
 
     private void transform() {
         String[] resultArray = mScanResult.split(CommonConstans.SPLITE);
@@ -109,6 +112,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
     @Override
     protected void initView() {
+        initDialog();
         initVoice();
         checkPermission(Constans.permissions, new Action() {
             @Override
@@ -118,7 +122,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         }, new Action() {
             @Override
             public void onAction(List<String> permissions) {
-                ToastUtil.show(App.getAppContext(), "请授予权限，以防影响正常使用");
+                ToastUtil.show(App.getAppContext(), "请前往设置授予权限，以免影响正常使用");
             }
         });
     }
@@ -219,7 +223,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         }
     }
 
-
     private void startVoice() {
         if (!NetworkUtils.isConnected()) {
             ToastUtil.show(App.getAppContext(), "请连接网路");
@@ -228,40 +231,10 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         checkPermission(Constans.permissions, new Action() {
             @Override
             public void onAction(List<String> permissions) {
-                mVoiceDialog = new VoiceDialog(mContext);
-                mVoiceDialog
-                        .setStartListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                start();
-                            }
-                        })
-                        .setStopListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                stop();
-                            }
-                        })
-                        .setSearchListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (!TextUtils.isEmpty(mVoiceDialog.getResultRext())) {
-                                    SearchResultOneActivity.startActivity(mContext, mVoiceDialog.getResultRext());
-                                } else {
-                                    ToastUtil.show(App.getAppContext(), "内容不可为空");
-                                }
-                            }
-                        })
-                        .show();
+                showDialog();
             }
-        }, new Action() {
-            @Override
-            public void onAction(List<String> permissions) {
-                ToastUtil.show(App.getAppContext(), "请开启语音权限");
-            }
+        }, permissions -> {
         });
-
-
     }
 
     /**
@@ -300,7 +273,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
      * 点击停止按钮
      */
     private void stop() {
-        asr.send(SpeechConstant.ASR_STOP, null, null, 0, 0); //
+        asr.send(SpeechConstant.ASR_STOP, null, null, 0, 0);
     }
 
     /**
@@ -311,7 +284,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
      */
     @Override
     public void onEvent(String name, String params, byte[] data, int offset, int length) {
-        logTxt = "";
         JsonObject result = null;
 
         if (params != null && !params.isEmpty()) {
@@ -324,12 +296,12 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 //                }
 //            }
             if (!TextUtils.isEmpty(result.get("best_result").getAsString())) {
-                logTxt += result.get("best_result").getAsString();
+                logTxt = result.get("best_result").getAsString();
             }
-
         }
+
         txtResult.setText(logTxt);
-        EventBus.getDefault().post(new MessageEvent(logTxt));
+        setResultText(logTxt);
     }
 
     @Override
@@ -343,7 +315,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         super.onDestroy();
         asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
         asr.unregisterListener(this);
-        mVoiceDialog.dismiss();
     }
 
     @Override
@@ -351,4 +322,79 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         App.getInstance().exitAppWithTwiceClick();
     }
 
+
+    /**
+     * ############### Dialog #############
+     **/
+
+    private Dialog bottomDialog;
+    private Button finishBtn;
+    private TextView resultTxt;
+    private VoiceLineView voiceLineView;
+    private ImageView cancleImage;
+
+    private void dismissDialog() {
+        stop();
+        logTxt = "";
+        bottomDialog.dismiss();
+    }
+
+    private void showDialog() {
+        resultTxt.setText("仅念出车牌数字即可");
+        start();
+        bottomDialog.show();
+    }
+
+    private void setResultText(String result) {
+        if (!TextUtils.isEmpty(result)) {
+            resultTxt.setText(result);
+        }
+        Log.i("ck", "结果是：" + result);
+    }
+
+    private void initDialog() {
+        bottomDialog = new Dialog(this, R.style.BottomDialog);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_voice_bottom, null);
+        voiceLineView = (VoiceLineView) contentView.findViewById(R.id.voicLine);
+        voiceLineView.setVolume(100);
+        finishBtn = (Button) contentView.findViewById(R.id.btn_voice_finish);
+        resultTxt = (TextView) contentView.findViewById(R.id.txt_voice_result);
+        cancleImage = (ImageView) contentView.findViewById(R.id.image_cancle_dialog);
+        bottomDialog.setContentView(contentView);
+        //如果不设置这两句，出来的dialog会宽度非常窄，因为布局中的参数是与parent匹配，
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
+        params.width = getResources().getDisplayMetrics().widthPixels - DensityUtil.dp2px(this, 16f);
+        params.bottomMargin = DensityUtil.dp2px(this, 8f);
+        contentView.setLayoutParams(params);
+        bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
+        bottomDialog.setCanceledOnTouchOutside(false);
+        bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String result = resultTxt.getText().toString().trim();
+                if (TextUtils.isEmpty(result) || TextUtils.equals(result, "仅念出车牌数字即可")) {
+                    ToastUtil.show(App.getAppContext(), "没有检测到输入");
+                } else if (!checkResultFormat(result)) {
+                    ToastUtil.show(App.getAppContext(), "请念出正确的数字车牌");
+                } else {
+                    ToastUtil.show(App.getAppContext(), result);
+                    SearchResultOneActivity.startActivity(mContext, result);
+                }
+                dismissDialog();
+            }
+        });
+        cancleImage.setOnClickListener(v -> {
+            dismissDialog();
+        });
+    }
+
+    private boolean checkResultFormat(String result) {
+        for (int i = 0; i < result.length(); i++) {
+            if (!Character.isDigit(result.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -40,9 +40,6 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        if (position == mCars.size() - 1) {
-            holder.divider.setVisibility(View.GONE);
-        }
         holder.carNumTxt.setText(mCars.get(position).getCarNumber());
         holder.callImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,5 +92,12 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
 
     public void setOnCallListener(OnCallListener listener) {
         this.mOnCallListener = listener;
+    }
+
+    public void notifyDataChanged(List<Car> list) {
+        if (list != null) {
+            this.mCars = list;
+            notifyDataSetChanged();
+        }
     }
 }

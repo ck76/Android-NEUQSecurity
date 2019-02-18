@@ -21,6 +21,7 @@ import cn.ck.security.App;
 import cn.ck.security.R;
 import cn.ck.security.base.activity.BaseActivity;
 import cn.ck.security.business.security.Constans;
+import cn.ck.security.business.security.adapter.ItemLineDecoration;
 import cn.ck.security.business.security.adapter.ResultListAdapter;
 import cn.ck.security.business.security.model.Car;
 import cn.ck.security.network.NetworkFactory;
@@ -41,6 +42,7 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     RecyclerView recvResult;
 
     private ResultListAdapter mAdapter;
+    private ItemLineDecoration mItemLineDecoration;
     private List<Car> mCars;
 
     private String mVoiceCarNum;
@@ -54,6 +56,7 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     protected void initData(Bundle savedInstanceState) {
         mVoiceCarNum = getIntent().getStringExtra(Constans.CAR_NUM);
         if (!TextUtils.isEmpty(mVoiceCarNum)) {
+            editInput.setText(mVoiceCarNum);
             fuzzySearch(mVoiceCarNum);
         }
     }
@@ -61,11 +64,15 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     @Override
     protected void initView() {
         editInput.addTextChangedListener(this);
+        initRecv();
     }
 
     private void initRecv() {
+
         recvResult.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new ResultListAdapter(mCars, this);
+        mItemLineDecoration = new ItemLineDecoration(this);
+        recvResult.addItemDecoration(mItemLineDecoration);
         recvResult.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new ResultListAdapter.OnItemClickListener() {
             @Override
@@ -109,7 +116,7 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
                     @Override
                     protected void onDataBack(ApiResponse<List<Car>> response) {
                         mCars = response.getData();
-                        initRecv();
+                        mAdapter.notifyDataChanged(mCars);
                         txtHint.setVisibility(View.GONE);
                     }
 

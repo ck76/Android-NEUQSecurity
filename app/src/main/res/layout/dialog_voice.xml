@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:voiceView="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_horizontal"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
@@ -59,6 +60,20 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:visibility="gone" />
+            <com.carlos.voiceline.mylibrary.VoiceLineView
+                android:id="@+id/voicLine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                voiceView:maxVolume="200"
+                voiceView:middleLine="#2196F3"
+                voiceView:middleLineHeight="1dp"
+                voiceView:fineness="three"
+                voiceView:rectSpace="2dp"
+                voiceView:rectWidth="5dp"
+                voiceView:sensibility="four"
+                voiceView:viewMode="line"
+                voiceView:voiceLine="#2196F3" />
 
         </FrameLayout>
 

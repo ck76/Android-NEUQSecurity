@@ -82,7 +82,7 @@ public class VoiceDialog {
                 @Override
                 public void onClick(View view) {
                     listener.onClick(view);
-                    waveBezier.setVisibility(View.VISIBLE);
+                    //waveBezier.setVisibility(View.VISIBLE);
                     btnSearch.setVisibility(View.GONE);
                     waveBezier.startAnimation();
                 }

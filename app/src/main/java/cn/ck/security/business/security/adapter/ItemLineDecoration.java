@@ -1,6 +1,8 @@
 package cn.ck.security.business.security.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -8,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import cn.ck.security.R;
+import cn.ck.security.utils.DensityUtil;
 
 /**
  * @author chengkun
@@ -16,8 +19,13 @@ import cn.ck.security.R;
 public class ItemLineDecoration extends RecyclerView.ItemDecoration {
     private int mydevider;
     private Paint dividerPaint;
+    private Context mContext;
+    private Bitmap mBitmap;
+    private Rect mRect;
 
     public ItemLineDecoration(Context context) {
+        mContext = context;
+        mBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_divider);
         dividerPaint = new Paint();
         //设置分割线颜色
         dividerPaint.setColor(context.getResources().getColor(R.color.colorAccent));
@@ -34,14 +42,15 @@ public class ItemLineDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         int childCount = parent.getChildCount();
-        int left = parent.getPaddingLeft();
+        int left = parent.getPaddingLeft() + DensityUtil.dp2px(mContext, 12);
         int right = parent.getWidth() - parent.getPaddingRight();
 
         for (int i = 0; i < childCount - 1; i++) {
             View view = parent.getChildAt(i);
             float top = view.getBottom();
             float bottom = view.getBottom() + mydevider;
-            c.drawRect(left, top, right, bottom, dividerPaint);
+            //c.drawRect(left, top, right, bottom, dividerPaint);
+            c.drawBitmap(mBitmap, left, top, dividerPaint);
         }
     }
 }

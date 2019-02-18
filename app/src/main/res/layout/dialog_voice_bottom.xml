@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:voiceView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_bottom"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/image_cancle_dialog"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end"
+            android:paddingLeft="8dp"
+            android:paddingBottom="8dp"
+            android:src="@drawable/ic_cancle" />
+
+        <com.carlos.voiceline.mylibrary.VoiceLineView
+            android:id="@+id/voicLine"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            voiceView:fineness="three"
+            voiceView:lineSpeed="100"
+            voiceView:maxVolume="200"
+            voiceView:middleLine="#2196F3"
+            voiceView:middleLineHeight="2dp"
+            voiceView:rectSpace="2dp"
+            voiceView:rectWidth="5dp"
+            voiceView:sensibility="one"
+            voiceView:viewMode="line"
+            voiceView:voiceLine="#2196F3" />
+
+        <TextView
+            android:id="@+id/txt_voice_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_voice_finish"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_voice_dialog_btn"
+            android:text="我说完了" />
+    </FrameLayout>
+
+</RelativeLayout>
