@@ -36,6 +36,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.ck.security.ActivityStackManager;
 import cn.ck.security.App;
 import cn.ck.security.R;
 import cn.ck.security.base.mvp.view.BasePresenterActivity;
@@ -117,12 +118,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         checkPermission(Constans.permissions, new Action() {
             @Override
             public void onAction(List<String> permissions) {
-
-            }
-        }, new Action() {
-            @Override
-            public void onAction(List<String> permissions) {
-                ToastUtil.show(App.getAppContext(), "请前往设置授予权限，以免影响正常使用");
             }
         });
     }
@@ -142,10 +137,13 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 startActivity(SearchResultOneActivity.class);
                 break;
             case R.id.image_scan:
-                startActivityForResult(ScanActivity.class, REQUEST_CODE);
-                break;
             case R.id.btn_scan:
-                startActivityForResult(ScanActivity.class, REQUEST_CODE);
+                checkPermission(Constans.permissions, new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        startActivityForResult(ScanActivity.class, REQUEST_CODE);
+                    }
+                });
                 break;
             case R.id.btn_search:
                 startActivity(SearchResultOneActivity.class);
@@ -233,7 +231,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
             public void onAction(List<String> permissions) {
                 showDialog();
             }
-        }, permissions -> {
         });
     }
 
@@ -302,24 +299,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
         txtResult.setText(logTxt);
         setResultText(logTxt);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
-        asr.unregisterListener(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        App.getInstance().exitAppWithTwiceClick();
     }
 
 
@@ -396,5 +375,32 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
             }
         }
         return true;
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (bottomDialog != null && bottomDialog.isShowing()) {
+            dismissDialog();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
+        asr.unregisterListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        ActivityStackManager.getManager().exitAppWithTwiceClick();
     }
 }

@@ -30,7 +30,7 @@ public class ItemLineDecoration extends RecyclerView.ItemDecoration {
         //设置分割线颜色
         dividerPaint.setColor(context.getResources().getColor(R.color.colorAccent));
         //设置分割线宽度
-        mydevider = 1;
+        mydevider = DensityUtil.dp2px(mContext, 20);
     }
 
     @Override
@@ -43,14 +43,15 @@ public class ItemLineDecoration extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         int childCount = parent.getChildCount();
         int left = parent.getPaddingLeft() + DensityUtil.dp2px(mContext, 12);
-        int right = parent.getWidth() - parent.getPaddingRight();
+        int right = parent.getWidth() - parent.getPaddingRight() - DensityUtil.dp2px(mContext, 12);
 
         for (int i = 0; i < childCount - 1; i++) {
             View view = parent.getChildAt(i);
-            float top = view.getBottom();
-            float bottom = view.getBottom() + mydevider;
+            int top = view.getBottom();
+            int bottom = view.getBottom() + mydevider;
             //c.drawRect(left, top, right, bottom, dividerPaint);
-            c.drawBitmap(mBitmap, left, top, dividerPaint);
+            // c.drawBitmap(mBitmap, left, top, dividerPaint);
+            c.drawBitmap(mBitmap, null, new Rect(left, top, right, bottom), dividerPaint);
         }
     }
 }

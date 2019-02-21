@@ -13,10 +13,12 @@
 
         <ImageView
             android:id="@+id/image_cancle_dialog"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_gravity="end"
-            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="6dp"
             android:paddingBottom="8dp"
             android:src="@drawable/ic_cancle" />
 
@@ -44,13 +46,14 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:text="仅念出车牌数字即可"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_voice_finish"
             android:layout_width="80dp"
             android:layout_height="36dp"
-            android:layout_gravity="bottom|end"
+            android:layout_gravity="center_horizontal|bottom"
             android:layout_margin="16dp"
             android:background="@drawable/bg_voice_dialog_btn"
             android:text="我说完了" />

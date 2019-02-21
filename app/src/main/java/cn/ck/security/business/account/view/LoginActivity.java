@@ -68,7 +68,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     protected void onDataBack(ApiResponse<User> response) {
                         CacheUtil.put(CacheKey.TOKEN, response.getData().getTokenStr());
-                        ToastUtil.show(App.getAppContext(), "登陆成功");
+                        ToastUtil.show(App.getAppContext(), "登录成功");
                         startActivity(SecurityActivity.class);
                         finish();
                         mLoadingDialog.dismiss();

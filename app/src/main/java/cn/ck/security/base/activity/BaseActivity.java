@@ -10,9 +10,14 @@ import android.view.WindowManager;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.ck.security.ActivityStackManager;
+import cn.ck.security.App;
 import cn.ck.security.utils.StatusBarUtils;
+import cn.ck.security.utils.ToastUtil;
 import cn.ck.security.wedget.LoadingDialogWeiBo;
 
 /**
@@ -36,6 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         removeFragmentState(savedInstanceState);
         super.onCreate(savedInstanceState);
+        ActivityStackManager.getManager().push(this);
         setContentView(getLayoutId());
         mUnbinder = ButterKnife.bind(this);
         mContext = this;
@@ -103,6 +109,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityStackManager.getManager().remove(this);
         mUnbinder.unbind();
     }
 
@@ -154,14 +161,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void checkPermission(String[] permissions, Action granted, Action denied) {
+    protected void checkPermission(String[] permissions, Action granted) {
         AndPermission
                 .with(mContext)
                 .permission(permissions)
                 .onGranted(granted)
-                .onDenied(denied)
+                .onDenied(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        // 判断用户是不是不再显示权限弹窗了，若不再显示的话进入权限设置页
+                        if (AndPermission.hasAlwaysDeniedPermission(mContext, permissions)) {
+                            // 打开权限设置页
+                            ToastUtil.show(App.getAppContext(), "请去设置为东大安保开启相应权限,以免影响正常使用");
+                            AndPermission.permissionSetting(mContext).execute();
+                            return;
+                        }
+                        ToastUtil.show(App.getAppContext(), "请前往设置授予权限，以免影响正常使用");
+                    }
+                })
                 .start();
     }
-
 
 }

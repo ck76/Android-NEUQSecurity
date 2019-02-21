@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,6 +55,7 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        mCars=new ArrayList<>();
         mVoiceCarNum = getIntent().getStringExtra(Constans.CAR_NUM);
         if (!TextUtils.isEmpty(mVoiceCarNum)) {
             editInput.setText(mVoiceCarNum);
@@ -68,7 +70,12 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     }
 
     private void initRecv() {
-
+        //test
+//        for (int i = 0; i < 20; i++) {
+//            Car car = new Car();
+//            car.setCarNumber(String.valueOf(i));
+//            mCars.add(car);
+//        }
         recvResult.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new ResultListAdapter(mCars, this);
         mItemLineDecoration = new ItemLineDecoration(this);

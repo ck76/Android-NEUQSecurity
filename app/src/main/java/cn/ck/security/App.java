@@ -79,7 +79,7 @@ public class App extends Application {
         return new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                sActivityList.add(activity);
+               // sActivityList.add(activity);
             }
 
             @Override
@@ -109,7 +109,7 @@ public class App extends Application {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-                sActivityList.remove(activity);
+               // sActivityList.remove(activity);
             }
         };
     }
@@ -142,7 +142,7 @@ public class App extends Application {
      * 退出应用
      */
     public void exitApp() {
-        removeAllActivity();
+        //removeAllActivity();
     }
 
     /**
@@ -156,7 +156,7 @@ public class App extends Application {
             //更新当前时间戳
             sTimeMillis = currentTime;
         } else {
-            removeAllActivity();
+            //removeAllActivity();
         }
     }
 
@@ -164,7 +164,7 @@ public class App extends Application {
      * 切换账户
      */
     public void exitAccount() {
-        removeAllActivity();
+        //removeAllActivity();
         CacheUtil.clear();
     }
 }
