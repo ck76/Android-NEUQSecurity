@@ -18,4 +18,5 @@ public class Constans {
     public static final String CAR_INFO = "carInfo";
     public static final String CAR_NUM = "carNum";
     public static final int VOICE_MESSAGE_WHAT = 100;
+    public static final String SEARCH_TIP = "";
 }

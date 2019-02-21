@@ -77,6 +77,8 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     TextView txtLogout;
     @BindView(R.id.txt_result)
     TextView txtResult;
+    @BindView(R.id.view_search)
+    View viewSearch;
 
     private String mScanResult;
     private String mType;
@@ -129,11 +131,12 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         asr.registerListener(this);
     }
 
-    @OnClick({R.id.ll_search, R.id.image_scan, R.id.btn_scan, R.id.btn_search, R.id.image_voice,
-            R.id.txt_logout})
+    @OnClick({R.id.view_search, R.id.ll_search, R.id.image_scan, R.id.btn_scan, R.id.btn_search,
+            R.id.image_voice, R.id.txt_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_search:
+            case R.id.view_search:
                 startActivity(SearchResultOneActivity.class);
                 break;
             case R.id.image_scan:
@@ -403,4 +406,5 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     public void onBackPressed() {
         ActivityStackManager.getManager().exitAppWithTwiceClick();
     }
+
 }

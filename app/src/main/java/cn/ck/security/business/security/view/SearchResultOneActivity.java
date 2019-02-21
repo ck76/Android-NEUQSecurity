@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,6 +52,8 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
 
     private String mVoiceCarNum;
 
+    private SpannableString mSpannableString;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_search_result_one;
@@ -55,7 +61,8 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        mCars=new ArrayList<>();
+        mCars = new ArrayList<>();
+        mSpannableString = new SpannableString(txtHint.getText());
         mVoiceCarNum = getIntent().getStringExtra(Constans.CAR_NUM);
         if (!TextUtils.isEmpty(mVoiceCarNum)) {
             editInput.setText(mVoiceCarNum);
@@ -65,6 +72,10 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
 
     @Override
     protected void initView() {
+        Log.i("ck",Constans.SEARCH_TIP);
+        mSpannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+                16, 23, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        txtHint.setText(mSpannableString);
         editInput.addTextChangedListener(this);
         initRecv();
     }

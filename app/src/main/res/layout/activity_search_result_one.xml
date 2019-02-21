@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/ll_search"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="42dp"
         android:background="#1296F3"
         android:orientation="horizontal">
 
@@ -72,8 +72,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
+        android:lineSpacingMultiplier="1.5"
         android:padding="24dp"
-        android:text="提示：\n输 入 车 牌 号 的 数 字 部 分，即 可 查 询 \n例 如：冀 C12345，只 用 搜 索 12345"
+        android:text="提示：\n输 入 车 牌 号 的 数 字 部 分，即 可 查 询 \n例 如：冀 C12345，只 用 搜 索 123456"
         android:textSize="14sp" />
 
 
