@@ -2,10 +2,16 @@ package cn.ck.security.business.account.view;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ck.security.App;
 import cn.ck.security.R;
@@ -18,16 +24,21 @@ import cn.ck.security.network.response.ApiCallBack;
 import cn.ck.security.network.response.ApiResponse;
 import cn.ck.security.network.services.ApiService;
 import cn.ck.security.utils.CacheUtil;
+import cn.ck.security.utils.KeyBoardUtil;
 import cn.ck.security.utils.ToastUtil;
 
 public class LoginActivity extends BaseActivity {
 
+    @BindView(R.id.root)
+    RelativeLayout root;
     @BindView(R.id.btn_login)
     Button btnLogin;
     @BindView(R.id.edit_name)
     EditText editName;
     @BindView(R.id.edit_pwd)
     EditText editPwd;
+    @BindView(R.id.fl_login)
+    FrameLayout flLogin;
 
     private String id;
     private String pwd;
@@ -40,10 +51,44 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        KeyBoardUtil.scrollLayoutAboveKeyBoard(this, root, flLogin);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         if (!TextUtils.isEmpty(token)) {
             startActivity(SecurityActivity.class);
             finish();
         }
+        editPwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                switch (actionId) {
+                    //点击GO键
+                    case EditorInfo.IME_ACTION_GO:
+                        return true;
+                    //点击Done
+                    case EditorInfo.IME_ACTION_DONE:
+                        if (checkFormat()) {
+                            login();
+                        }
+                        return true;
+                    //点击Next
+                    case EditorInfo.IME_ACTION_NEXT:
+                        return true;
+                    //点击Previous
+                    case EditorInfo.IME_ACTION_PREVIOUS:
+                        return true;
+                    //点击None
+                    case EditorInfo.IME_ACTION_NONE:
+                        return true;
+                    //点击Send
+                    case EditorInfo.IME_ACTION_SEND:
+                        return true;
+                    default:
+                        break;
+                }
+                //如果需要消费事件，则需要return true
+                return true;
+            }
+        });
     }
 
     @Override
@@ -58,6 +103,9 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 登录
+     */
     private void login() {
         mLoadingDialog.show();
         NetworkFactory
@@ -92,5 +140,12 @@ public class LoginActivity extends BaseActivity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
