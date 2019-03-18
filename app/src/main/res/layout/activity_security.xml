@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEF5FB "
@@ -23,7 +24,8 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="退出"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <FrameLayout
             android:id="@+id/fl_search"
@@ -32,13 +34,15 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="12">
 
-            <TextView
+            <EditText
+                android:id="@+id/edit_carNum"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:background="@drawable/bg_security_edit"
                 android:gravity="center_vertical"
+                android:hint="Search"
+                android:inputType="number"
                 android:paddingStart="26dp"
-                android:text="Search"
                 android:textSize="12sp"
                 tools:ignore="RtlSymmetry" />
 
@@ -51,21 +55,28 @@
 
 
         <TextView
+            android:id="@+id/txt_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="搜索"
-            android:textColor="@color/white" />
+            android:text="查询"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
     </LinearLayout>
+
     <View
         android:id="@+id/view_search"
-        android:layout_below="@id/ll_search"
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="20dp"
+        android:layout_below="@id/ll_search" />
+
+    <!--华丽的分割线，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，
+   之后的都不用了。。。。。。。。。。。。。。。。。。。。。。cccccc-->
+
 
     <TextView
         android:id="@+id/txt_titile"
@@ -77,14 +88,16 @@
         android:text="东大安保"
         android:textColor="@color/black"
         android:textSize="40sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/fl_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_titile"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="290dp"
@@ -130,13 +143,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:gravity="bottom"
-        android:text="试试语音输入车牌号" />
+        android:text="试试语音输入车牌号"
+        android:visibility="gone" />
 
 
     <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/btn_scan"
@@ -162,18 +178,85 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_voice" />
+        android:src="@drawable/ic_voice"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txt_result"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:text="ck"
         android:layout_marginBottom="100dp"
         android:background="@color/white"
+        android:text="ck"
         android:textColor="@color/black"
         android:textSize="10sp"
         android:visibility="gone" />
 
+    <!--华丽的分割线，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，，
+    之前的都不用了。。。。。。。。。。。。。。。。。。。。。。cccccc-->
+
+
+    <FrameLayout
+        android:id="@+id/fl_scan2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_scan" />
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_scan2" />
+
+    </FrameLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fl_scan2"
+        android:layout_centerHorizontal="true"
+        android:fillViewport="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="扫一扫"
+            android:textSize="14sp" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_voice2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_voice" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="长按语音输入"
+            android:textSize="12sp" />
+    </LinearLayout>
 
 </RelativeLayout>

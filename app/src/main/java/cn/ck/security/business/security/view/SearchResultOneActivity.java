@@ -2,6 +2,7 @@ package cn.ck.security.business.security.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,10 +30,12 @@ import cn.ck.security.business.security.Constans;
 import cn.ck.security.business.security.adapter.ItemLineDecoration;
 import cn.ck.security.business.security.adapter.ResultListAdapter;
 import cn.ck.security.business.security.model.Car;
+import cn.ck.security.common.CacheKey;
 import cn.ck.security.network.NetworkFactory;
 import cn.ck.security.network.response.ApiCallBack;
 import cn.ck.security.network.response.ApiResponse;
 import cn.ck.security.network.services.ApiService;
+import cn.ck.security.utils.CacheUtil;
 import cn.ck.security.utils.ToastUtil;
 
 public class SearchResultOneActivity extends BaseActivity implements TextWatcher {
@@ -45,13 +48,14 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     TextView txtHint;
     @BindView(R.id.recv_result)
     RecyclerView recvResult;
+    @BindView(R.id.txt_account_manage)
+    TextView txtAccountManage;
 
     private ResultListAdapter mAdapter;
     private ItemLineDecoration mItemLineDecoration;
     private List<Car> mCars;
 
     private String mVoiceCarNum;
-
     private SpannableString mSpannableString;
 
     @Override
@@ -72,8 +76,8 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
 
     @Override
     protected void initView() {
-        Log.i("ck",Constans.SEARCH_TIP);
-        mSpannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+        Log.i("ck", Constans.SEARCH_TIP);
+        mSpannableString.setSpan(new StyleSpan(Typeface.BOLD),
                 16, 23, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         txtHint.setText(mSpannableString);
         editInput.addTextChangedListener(this);
@@ -111,13 +115,18 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     }
 
     @OnClick(R.id.txt_search)
-    public void onViewClicked() {
+    public void onSearckTxtClicked() {
         String carNum = editInput.getText().toString().trim();
-        if (!TextUtils.isEmpty(carNum)) {
-            fuzzySearch(carNum);
-        } else {
+        if (TextUtils.isEmpty(carNum)) {
             ToastUtil.show(App.getAppContext(), "请输入车牌号");
+        } else {
+            fuzzySearch(carNum);
         }
+    }
+
+    @OnClick(R.id.txt_account_manage)
+    public void onManageTxtClicked() {
+        startActivity(AccountManageActivity.class);
     }
 
     @OnClick(R.id.image_clear)
@@ -125,24 +134,37 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
         editInput.setText("");
     }
 
+    /**
+     * 队长的号码范围是1066~1070 闭区间
+     */
     private void fuzzySearch(String carNum) {
+        if (carNum.equals(Constans.MANAGE_KEY)
+                && Integer.valueOf(CacheUtil.getSP().getString(CacheKey.USER_NAME, "1000")) >= 1066
+                && Integer.valueOf(CacheUtil.getSP().getString(CacheKey.USER_NAME, "1000")) <= 1070) {
+            txtHint.setVisibility(View.GONE);
+            txtAccountManage.setVisibility(View.VISIBLE);
+            recvResult.setVisibility(View.GONE);
+        } else {
+            txtAccountManage.setVisibility(View.GONE);
+            recvResult.setVisibility(View.VISIBLE);
 
-        NetworkFactory.getInstance()
-                .creatService(ApiService.class)
-                .fuzzySearch(carNum)
-                .enqueue(new ApiCallBack<List<Car>>() {
-                    @Override
-                    protected void onDataBack(ApiResponse<List<Car>> response) {
-                        mCars = response.getData();
-                        mAdapter.notifyDataChanged(mCars);
-                        txtHint.setVisibility(View.GONE);
-                    }
+            NetworkFactory.getInstance()
+                    .creatService(ApiService.class)
+                    .fuzzySearch(carNum)
+                    .enqueue(new ApiCallBack<List<Car>>() {
+                        @Override
+                        protected void onDataBack(ApiResponse<List<Car>> response) {
+                            mCars = response.getData();
+                            mAdapter.notifyDataChanged(mCars);
+                            txtHint.setVisibility(View.GONE);
+                        }
 
-                    @Override
-                    protected void onError(int code) {
+                        @Override
+                        protected void onError(int code) {
 
-                    }
-                });
+                        }
+                    });
+        }
     }
 
     @Override

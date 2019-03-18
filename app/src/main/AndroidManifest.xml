@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <!--Bugly-->
+    <!-- Bugly -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -36,7 +36,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity" />
-        <activity android:name=".business.security.view.SecurityActivity" />
+        <activity
+            android:name=".business.security.view.SecurityActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".business.security.view.SearchResultOneActivity" />
+        <activity android:name=".business.security.view.SearchResultTwoActivity" />
+        <activity android:name=".business.security.view.ScanActivity" />
+        <activity android:name=".voice.mini.ActivityMiniRecog" />
+        <activity android:name=".business.security.view.AccountManageActivity" />
         <activity android:name=".business.account.view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,11 +66,6 @@
         <service
             android:name="com.baidu.speech.VoiceRecognitionService"
             android:exported="false" />
-
-        <activity android:name=".business.security.view.SearchResultOneActivity" />
-        <activity android:name=".business.security.view.SearchResultTwoActivity" />
-        <activity android:name=".business.security.view.ScanActivity" />
-        <activity android:name=".voice.mini.ActivityMiniRecog" />
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ public class Constans {
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+    public static final String MANAGE_KEY="666666";
     public static final String CAR_INFO = "carInfo";
     public static final String CAR_NUM = "carNum";
     public static final int VOICE_MESSAGE_WHAT = 100;

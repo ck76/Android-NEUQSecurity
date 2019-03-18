@@ -10,11 +10,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +40,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 import cn.ck.security.ActivityStackManager;
 import cn.ck.security.App;
 import cn.ck.security.R;
@@ -54,6 +59,7 @@ import cn.ck.security.network.services.ApiService;
 import cn.ck.security.utils.CacheUtil;
 import cn.ck.security.utils.DensityUtil;
 import cn.ck.security.utils.DialogUtil;
+import cn.ck.security.utils.KeyBoardUtil;
 import cn.ck.security.utils.NetworkUtils;
 import cn.ck.security.utils.ToastUtil;
 import cn.ck.security.voice.mini.AutoCheck;
@@ -63,6 +69,8 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
     public static final int REQUEST_CODE = 200;
 
+    @BindView(R.id.root)
+    RelativeLayout root;
     @BindView(R.id.ll_search)
     LinearLayout llSearch;
     @BindView(R.id.image_scan)
@@ -79,6 +87,13 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     TextView txtResult;
     @BindView(R.id.view_search)
     View viewSearch;
+    @BindView(R.id.edit_carNum)
+    EditText editCarNum;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
+    @BindView(R.id.txt_search)
+    TextView txtSearch;
+
 
     private String mScanResult;
     private String mType;
@@ -115,13 +130,25 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
     @Override
     protected void initView() {
+        showSoftInputFromWindow(editCarNum);
         initDialog();
         initVoice();
+        checkNetWorkState();
         checkPermission(Constans.permissions, new Action() {
             @Override
             public void onAction(List<String> permissions) {
             }
         });
+    }
+
+    private void checkNetWorkState() {
+        if (!NetworkUtils.isConnected()) {
+            ToastUtil.show(App.getAppContext(), "请连接网路后使用东大安保");
+        }
+    }
+
+    public void showSoftInputFromWindow(EditText editText) {
+        KeyBoardUtil.showSoftInput(mContext, editText);
     }
 
     private void initVoice() {
@@ -132,7 +159,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     }
 
     @OnClick({R.id.view_search, R.id.ll_search, R.id.image_scan, R.id.btn_scan, R.id.btn_search,
-            R.id.image_voice, R.id.txt_logout})
+            R.id.image_voice, R.id.txt_logout, R.id.txt_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_search:
@@ -153,6 +180,14 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 break;
             case R.id.image_voice:
                 startVoice();
+                break;
+            case R.id.txt_search:
+                String carNum = editCarNum.getText().toString().trim();
+                if (!TextUtils.isEmpty(carNum)) {
+                    SearchResultOneActivity.startActivity(mContext, carNum);
+                } else {
+                    ToastUtil.show(App.getAppContext(), "请输入车牌号");
+                }
                 break;
             case R.id.txt_logout:
                 new DialogUtil.QuickDialog(this).setClickListener(() -> {
@@ -306,7 +341,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
 
     /**
-     * ############### Dialog #############
+     * ################################## Dialog ################################
      **/
 
     private Dialog bottomDialog;
@@ -405,6 +440,56 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     @Override
     public void onBackPressed() {
         ActivityStackManager.getManager().exitAppWithTwiceClick();
+    }
+
+
+    /**
+     * ################################## 3.18-UI全修改 ################################
+     **/
+
+    @BindView(R.id.fl_scan2)
+    FrameLayout flScan2;
+    @BindView(R.id.ll_voice2)
+    LinearLayout llVoice2;
+
+    @OnClick(R.id.fl_scan2)
+    public void onViewClicked() {
+        checkPermission(Constans.permissions, new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                startActivityForResult(ScanActivity.class, REQUEST_CODE);
+            }
+        });
+    }
+
+    @OnTouch(R.id.ll_voice2)
+    public boolean onViewTouched(View view, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                showDialog();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                dismissDialog();
+                break;
+            case MotionEvent.ACTION_UP:
+                String result = resultTxt.getText().toString().trim();
+                if (TextUtils.isEmpty(result) || TextUtils.equals(result, "仅念出车牌数字即可")) {
+                    ToastUtil.show(App.getAppContext(), "没有检测到输入");
+                } else if (!checkResultFormat(result)) {
+                    ToastUtil.show(App.getAppContext(), "请念出正确的数字车牌");
+                } else {
+                    ToastUtil.show(App.getAppContext(), result);
+                    SearchResultOneActivity.startActivity(mContext, result);
+                }
+                dismissDialog();
+                break;
+            default:
+                dismissDialog();
+                break;
+        }
+        return true;
     }
 
 }

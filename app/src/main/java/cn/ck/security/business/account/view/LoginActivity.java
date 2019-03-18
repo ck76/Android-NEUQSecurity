@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ck.security.App;
 import cn.ck.security.R;
@@ -116,6 +115,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     protected void onDataBack(ApiResponse<User> response) {
                         CacheUtil.put(CacheKey.TOKEN, response.getData().getTokenStr());
+                        CacheUtil.put(CacheKey.USER_NAME, editName.getText().toString());
                         ToastUtil.show(App.getAppContext(), "登录成功");
                         startActivity(SecurityActivity.class);
                         finish();
@@ -142,10 +142,4 @@ public class LoginActivity extends BaseActivity {
         return true;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

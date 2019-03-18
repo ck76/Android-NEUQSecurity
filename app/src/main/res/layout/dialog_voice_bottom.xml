@@ -16,11 +16,12 @@
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:layout_gravity="end"
-            android:paddingStart="8dp"
-            android:layout_marginEnd="6dp"
             android:layout_marginTop="6dp"
+            android:layout_marginEnd="6dp"
+            android:paddingStart="8dp"
             android:paddingBottom="8dp"
-            android:src="@drawable/ic_cancle" />
+            android:src="@drawable/ic_cancle"
+            android:visibility="gone" />
 
         <com.carlos.voiceline.mylibrary.VoiceLineView
             android:id="@+id/voicLine"
@@ -45,8 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
-            android:textColor="@color/black"
             android:text="仅念出车牌数字即可"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <Button
@@ -56,7 +57,8 @@
             android:layout_gravity="center_horizontal|bottom"
             android:layout_margin="16dp"
             android:background="@drawable/bg_voice_dialog_btn"
-            android:text="我说完了" />
+            android:text="我说完了"
+            android:visibility="gone" />
     </FrameLayout>
 
 </RelativeLayout>

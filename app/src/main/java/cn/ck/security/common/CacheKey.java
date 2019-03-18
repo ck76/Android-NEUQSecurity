@@ -8,6 +8,8 @@ public class CacheKey {
 
     public static final String TOKEN = "token";
 
+    public static final String USER_NAME="user_name";
+
     /**
      * app信息
      */
