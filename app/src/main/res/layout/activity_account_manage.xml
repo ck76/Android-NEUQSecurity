@@ -72,8 +72,9 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="62dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/scrollView"
                 android:layout_marginTop="62dp"
@@ -84,13 +85,12 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="38dp"
                     android:src="@drawable/ic_sign" />
 
                 <TextView
                     android:layout_width="234dp"
                     android:layout_height="67dp"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="16dp"
                     android:text="在修改密码后，账号会被强制下线，\n只有在输入新密码后才能继续使用查询功能。\n建议在人员变动后尽快修改密码。"
                     android:textColor="#1296F3"
                     android:textSize="12sp" />

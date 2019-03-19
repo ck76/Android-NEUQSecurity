@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.ck.security.App;
 import cn.ck.security.R;
 import cn.ck.security.base.activity.BaseActivity;
 import cn.ck.security.business.security.adapter.AccountManageAdapter;
@@ -18,7 +17,7 @@ import cn.ck.security.network.NetworkFactory;
 import cn.ck.security.network.response.ApiCallBack;
 import cn.ck.security.network.response.ApiResponse;
 import cn.ck.security.network.services.ApiService;
-import cn.ck.security.utils.ToastUtil;
+import cn.ck.security.wedget.ChangePwdDialog;
 
 import static cn.ck.security.business.security.adapter.AccountManageAdapter.FILED_ID;
 
@@ -49,7 +48,7 @@ public class AccountManageActivity extends BaseActivity {
                 .enqueue(new ApiCallBack<List<JsonObject>>() {
                     @Override
                     protected void onDataBack(ApiResponse<List<JsonObject>> response) {
-                        userList=response.getData();
+                        userList = response.getData();
                         mManageAdapter.notifyDataChanged(userList);
                     }
 
@@ -84,24 +83,9 @@ public class AccountManageActivity extends BaseActivity {
      * 弹修改密码dialog
      */
     private void showDialog(String userId) {
-        String password = null;
-
-        NetworkFactory
-                .getInstance()
-                .creatService(ApiService.class)
-                .resetPwd(userId,password)
-                .enqueue(new ApiCallBack<Void>() {
-                    @Override
-                    protected void onDataBack(ApiResponse<Void> response) {
-                        ToastUtil.show(App.getAppContext(),"重置密码成功");
-                    }
-                    @Override
-                    protected void onError(int code) {
-                        ToastUtil.show(App.getAppContext(),"重置密码失败");
-                    }
-                });
-
+        new ChangePwdDialog(mContext, userId)
+                .setHintText()
+                .show();
     }
-
 
 }

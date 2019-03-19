@@ -20,8 +20,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center_vertical"
-            android:padding="6dp"
             android:layout_marginLeft="8dp"
+            android:padding="6dp"
             android:src="@drawable/ic_back" />
 
         <FrameLayout
@@ -36,6 +36,7 @@
                 android:id="@+id/edit_input"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/bg_security_edit"
                 android:hint="Search"
                 android:inputType="number"
@@ -48,6 +49,7 @@
             <ImageView
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_search" />
 
             <ImageView
@@ -66,13 +68,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:layout_weight="2"
+            android:gravity="center"
             android:text="搜索"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

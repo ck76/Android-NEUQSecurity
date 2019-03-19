@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_item_account_manage"
-    android:minWidth="306dp"
-    android:minHeight="184dp">
+    android:layout_width="306dp"
+    android:layout_height="184dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/bg_item_account_manage">
 
     <TextView
+        android:id="@+id/txt_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -16,6 +16,7 @@
         android:textSize="16sp" />
 
     <EditText
+        android:id="@+id/edit_new_pwd"
         android:layout_width="242dp"
         android:layout_height="34dp"
         android:layout_centerHorizontal="true"
@@ -32,19 +33,21 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btn_cancle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/bg_btn_change_pwd"
+            android:background="@drawable/bg_btn_change_pwd_left"
             android:text="取消"
             android:textColor="#1296F3"
             android:textSize="16sp" />
 
         <Button
+            android:id="@+id/btn_change_pwd"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/bg_btn_change_pwd"
+            android:background="@drawable/bg_btn_change_pwd_right"
             android:text="修改"
             android:textColor="#1296F3"
             android:textSize="16sp" />

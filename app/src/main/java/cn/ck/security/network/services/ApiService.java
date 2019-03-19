@@ -77,6 +77,7 @@ public interface ApiService {
      * @param id       人员id
      * @param password 重置后密码
      */
+    @FormUrlEncoded
     @POST("user/resetNormalScannerPassword")
     Call<ApiResponse<Void>> resetPwd(@Field("id") String id, @Field("password") String password);
 }

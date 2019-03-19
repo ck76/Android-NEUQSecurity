@@ -191,7 +191,7 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         if (!TextUtils.isEmpty(carNum)) {
             SearchResultOneActivity.startActivity(mContext, carNum);
         } else {
-            ToastUtil.show(App.getAppContext(), "请输入车牌号");
+            startActivity(SearchResultOneActivity.class);
         }
     }
 
