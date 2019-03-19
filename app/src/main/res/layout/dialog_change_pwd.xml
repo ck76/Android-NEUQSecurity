@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_item_account_manage"
+    android:minWidth="306dp"
+    android:minHeight="184dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="您将修改账号1001的密码"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <EditText
+        android:layout_width="242dp"
+        android:layout_height="34dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="78dp"
+        android:background="@drawable/bg_item_account_manage"
+        android:gravity="center"
+        android:hint="请输入至少6位数的新密码"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_change_pwd"
+            android:text="取消"
+            android:textColor="#1296F3"
+            android:textSize="16sp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_change_pwd"
+            android:text="修改"
+            android:textColor="#1296F3"
+            android:textSize="16sp" />
+    </LinearLayout>
+</RelativeLayout>

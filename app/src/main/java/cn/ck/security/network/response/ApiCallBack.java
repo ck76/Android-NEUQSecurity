@@ -15,6 +15,7 @@ import retrofit2.Response;
  * @since 2018/11/24 03:16
  */
 public abstract class ApiCallBack<T> implements Callback<ApiResponse<T>> {
+    //后端token失效的错误码，注意不同后端的不同习惯
     public static final int TOKEN_ERROR = 1011;
 
     protected abstract void onDataBack(ApiResponse<T> response);

@@ -16,6 +16,7 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     RecyclerView recvResult;
     @BindView(R.id.txt_account_manage)
     TextView txtAccountManage;
+    @BindView(R.id.image_back)
+    ImageView imageBack;
 
     private ResultListAdapter mAdapter;
     private ItemLineDecoration mItemLineDecoration;
@@ -85,12 +88,6 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     }
 
     private void initRecv() {
-        //test
-//        for (int i = 0; i < 20; i++) {
-//            Car car = new Car();
-//            car.setCarNumber(String.valueOf(i));
-//            mCars.add(car);
-//        }
         recvResult.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new ResultListAdapter(mCars, this);
         mItemLineDecoration = new ItemLineDecoration(this);
@@ -132,6 +129,11 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
     @OnClick(R.id.image_clear)
     public void onClearClick() {
         editInput.setText("");
+    }
+
+    @OnClick(R.id.image_back)
+    public void onBackClick() {
+        finish();
     }
 
     /**
@@ -187,4 +189,5 @@ public class SearchResultOneActivity extends BaseActivity implements TextWatcher
         intent.putExtra(Constans.CAR_NUM, carNum);
         context.startActivity(intent);
     }
+
 }

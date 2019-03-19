@@ -19,6 +19,7 @@ import cn.ck.security.R;
 import cn.ck.security.event.MessageEvent;
 
 /**
+ * 废弃
  * @author chengkun
  * @since 2019/1/23 20:06
  */

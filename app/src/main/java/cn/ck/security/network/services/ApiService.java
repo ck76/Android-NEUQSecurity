@@ -1,5 +1,7 @@
 package cn.ck.security.network.services;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
 import cn.ck.security.business.account.model.User;
@@ -60,4 +62,21 @@ public interface ApiService {
      */
     @GET("pass/getcheckedpasses/{limit}/{offset}")
     Call<ApiResponse<List<Car>>> getPassedCars(@Path("offset") String start, @Path("limit") String offset);
+
+    /**
+     * 获取普通安保处人员的id列表
+     * 只用有安保处队长的token才有权限。安保处人员id改为从1050~1070，1
+     * 066~1070为安保处队长账号，普通安保人员的role为1，安保处人员的role为66.所有安保处的role可用小于100确定
+     */
+    @GET("user/getNormalScannerList")
+    Call<ApiResponse<List<JsonObject>>> getNormalScannerList();
+
+    /**
+     * 只能重置安保处普通人员的密码
+     *
+     * @param id       人员id
+     * @param password 重置后密码
+     */
+    @POST("user/resetNormalScannerPassword")
+    Call<ApiResponse<Void>> resetPwd(@Field("id") String id, @Field("password") String password);
 }

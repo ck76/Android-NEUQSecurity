@@ -94,7 +94,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     @BindView(R.id.txt_search)
     TextView txtSearch;
 
-
     private String mScanResult;
     private String mType;
     private String mResult;
@@ -102,17 +101,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
     //语音识别
     private EventManager asr;
     private String logTxt = "";
-
-    private void transform() {
-        String[] resultArray = mScanResult.split(CommonConstans.SPLITE);
-        if (resultArray.length >= 2) {
-            mType = resultArray[0];
-            mResult = resultArray[1];
-            excute();
-        } else {
-            ToastUtil.show(App.getAppContext(), "请扫描出入证上的二维码");
-        }
-    }
 
     @Override
     protected int getLayoutId() {
@@ -141,6 +129,9 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         });
     }
 
+    /**
+     * 检查网络是否连接
+     */
     private void checkNetWorkState() {
         if (!NetworkUtils.isConnected()) {
             ToastUtil.show(App.getAppContext(), "请连接网路后使用东大安保");
@@ -158,6 +149,9 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         asr.registerListener(this);
     }
 
+    /**
+     * UI第二次大改版后几乎全部控件点击事件取消
+     */
     @OnClick({R.id.view_search, R.id.ll_search, R.id.image_scan, R.id.btn_scan, R.id.btn_search,
             R.id.image_voice, R.id.txt_logout, R.id.txt_search})
     public void onViewClicked(View view) {
@@ -182,26 +176,50 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 startVoice();
                 break;
             case R.id.txt_search:
-                String carNum = editCarNum.getText().toString().trim();
-                if (!TextUtils.isEmpty(carNum)) {
-                    SearchResultOneActivity.startActivity(mContext, carNum);
-                } else {
-                    ToastUtil.show(App.getAppContext(), "请输入车牌号");
-                }
+                search();
                 break;
             case R.id.txt_logout:
-                new DialogUtil.QuickDialog(this).setClickListener(() -> {
-                    CacheUtil.put(CacheKey.TOKEN, "");
-                    finish();
-                    startActivity(LoginActivity.class);
-                }).showDialog("确认退出登录？");
+                logout();
                 break;
             default:
                 break;
         }
     }
 
+    private void search() {
+        String carNum = editCarNum.getText().toString().trim();
+        if (!TextUtils.isEmpty(carNum)) {
+            SearchResultOneActivity.startActivity(mContext, carNum);
+        } else {
+            ToastUtil.show(App.getAppContext(), "请输入车牌号");
+        }
+    }
 
+    private void logout() {
+        new DialogUtil.QuickDialog(this).setClickListener(() -> {
+            CacheUtil.put(CacheKey.TOKEN, "");
+            finish();
+            startActivity(LoginActivity.class);
+        }).showDialog("确认退出登录？");
+    }
+
+    /**
+     * 转化解析结果
+     */
+    private void transform() {
+        String[] resultArray = mScanResult.split(CommonConstans.SPLITE);
+        if (resultArray.length >= 2) {
+            mType = resultArray[0];
+            mResult = resultArray[1];
+            excute();
+        } else {
+            ToastUtil.show(App.getAppContext(), "请扫描出入证上的二维码");
+        }
+    }
+
+    /**
+     * 执行解析请求
+     */
     private void excute() {
         switch (mType) {
             case CommonConstans
@@ -215,7 +233,9 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
 
     }
 
-
+    /**
+     * 搜索
+     */
     private void searchCar() {
         showLoading();
         NetworkFactory.getInstance()
@@ -237,27 +257,9 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 });
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            //处理扫描结果（在界面上显示）
-            if (null != data) {
-                Bundle bundle = data.getExtras();
-                if (bundle == null) {
-                    return;
-                }
-                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                    mScanResult = bundle.getString(CodeUtils.RESULT_STRING);
-                    transform();
-                    Toast.makeText(this, "解析结果:" + mScanResult, Toast.LENGTH_LONG).show();
-                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                    Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    }
+    /**
+     * ################################## 语音识别相关 ################################
+     **/
 
     private void startVoice() {
         if (!NetworkUtils.isConnected()) {
@@ -325,11 +327,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
             result = new JsonParser().parse(params).getAsJsonObject();
         }
         if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL)) {
-//            if (params != null && params.contains("\"nlu_result\"")) {
-//                if (length > 0 && data.length > 0) {
-//                    logTxt += ", 语义解析结果：" + new String(data, offset, length);
-//                }
-//            }
             if (!TextUtils.isEmpty(result.get("best_result").getAsString())) {
                 logTxt = result.get("best_result").getAsString();
             }
@@ -442,6 +439,26 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         ActivityStackManager.getManager().exitAppWithTwiceClick();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    mScanResult = bundle.getString(CodeUtils.RESULT_STRING);
+                    transform();
+                    Toast.makeText(this, "解析结果:" + mScanResult, Toast.LENGTH_LONG).show();
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
 
     /**
      * ################################## 3.18-UI全修改 ################################
@@ -486,7 +503,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
                 dismissDialog();
                 break;
             default:
-                dismissDialog();
                 break;
         }
         return true;
