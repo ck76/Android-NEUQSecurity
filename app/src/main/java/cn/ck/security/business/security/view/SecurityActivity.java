@@ -9,10 +9,12 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -125,6 +127,19 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         checkPermission(Constans.permissions, new Action() {
             @Override
             public void onAction(List<String> permissions) {
+            }
+        });
+        editCarNum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                switch (actionId) {
+                    //点击Done
+                    case EditorInfo.IME_ACTION_DONE:
+                        search();
+                        return true;
+                }
+                //如果需要消费事件，则需要return true
+                return true;
             }
         });
     }
@@ -507,5 +522,6 @@ public class SecurityActivity extends BasePresenterActivity<SecurityContract.Sec
         }
         return true;
     }
+
 
 }
